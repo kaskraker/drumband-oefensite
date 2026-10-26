@@ -81,7 +81,7 @@ function choosePage(p){
 /* stap 2: video en partituur voor dat instrument */
 function instrumentPage(p, part, single){
   var h = '<a class="back" href="#'+(single?'':p.id)+'">← '+(single?'Terug':esc(p.title))+'</a>'+
-    '<div class="piece-head"><h1>'+esc(part.name)+'</h1>'+(single?'':'<span class="of">'+esc(p.title)+'</span>')+'</div>';
+    '<div class="piece-head"><h1>'+esc(p.title)+'</h1>'+(single?'':'<p class="inst">'+esc(part.name)+'</p>')+'</div>';
   if(part.videos) h += videoSection(part);
   h += '<section class="sec"><div class="sechead"><h2>Partituur</h2>'+
     '<a class="btn" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf">'+ICON_DL_S+'<span>Download</span></a></div>'+

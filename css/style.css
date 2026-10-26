@@ -294,3 +294,5 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
   @keyframes ph2{0%,34.9%{background:transparent;border-color:var(--ink);color:var(--ink)}35%,47%{background:var(--red);border-color:var(--red);color:var(--bone)}47.1%,100%{background:transparent;border-color:var(--ink);color:var(--ink)}}
   @keyframes ph3{0%,46.9%{background:transparent;border-color:var(--ink);color:var(--ink)}47%,67%{background:var(--red);border-color:var(--red);color:var(--bone)}67.1%,100%{background:transparent;border-color:var(--ink);color:var(--ink)}}
 }
+
+.piece-head .inst{flex-basis:100%;margin:-6px 0 0;font-size:1.6rem;font-weight:700;color:var(--ink)}
