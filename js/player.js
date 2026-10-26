@@ -5,7 +5,7 @@
 (function(){
 'use strict';
 
-var NAMES = {snare:'snare', bas:'basdrum', tenor:'veldtrommel'};
+var NAMES = {snare:'snare', bas:'bas', tenor:'tenor'};
 var LOOK = 0.15;                      // zoveel seconden vooruit inplannen
 var store = {get:function(k,d){try{var v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}, set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 var shared = {ctx:null, buf:null, map:null, loading:null, scores:{}};
@@ -58,7 +58,7 @@ function Player(opts){
 }
 
 Player.prototype.render = function(){
-  var P = this, other = P.voice === 'snare' ? 'snare' : NAMES[P.voice];
+  var P = this, others = Object.keys(NAMES).filter(function(v){ return v !== P.voice }).map(function(v){ return NAMES[v] });
   var steps = [60,70,80,90,100,110,120];
   if(P.o.goal) P.o.goal.forEach(function(g){ if(steps.indexOf(g)<0) steps.push(g) });
   steps.sort(function(a,b){return a-b});
@@ -80,8 +80,8 @@ Player.prototype.render = function(){
     '</div></div>'+
     '<div class="pl-opts">'+
       '<div class="pl-seg" role="group" aria-label="Wat hoor je">'+
-        '<button type="button" data-mix="0" aria-pressed="'+(!P.all)+'">Alleen '+esc(P.o.partName)+'</button>'+
-        '<button type="button" data-mix="1" aria-pressed="'+P.all+'">Alles samen</button>'+
+        '<button type="button" data-mix="0" aria-pressed="'+(!P.all)+'">Alleen '+NAMES[P.voice]+'</button>'+
+        '<button type="button" data-mix="1" aria-pressed="'+P.all+'">Met '+others.join(' en ')+'</button>'+
       '</div>'+
       '<button type="button" class="pl-tog" data-pl="click" aria-pressed="'+P.click+'">Metronoom</button>'+
       '<button type="button" class="pl-tog" data-pl="loop" aria-pressed="false">Lijn herhalen</button>'+
@@ -186,7 +186,14 @@ Player.prototype.paintPos = function(i, frac){
   }
   P.layers.forEach(function(L){ Array.prototype.forEach.call(L.querySelectorAll('.cur'), function(e){ e.style.setProperty('--p', (frac*100).toFixed(1)+'%') }) });
 };
+function userScrolled(){ shared.userScroll = Date.now() }
+['wheel','touchmove','keydown'].forEach(function(ev){ window.addEventListener(ev, function(e){
+  if(ev === 'keydown' && ['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].indexOf(e.key) < 0) return;
+  userScrolled();
+}, {passive:true}) });
+window.addEventListener('pointerdown', function(e){ if(e.target === document.documentElement) userScrolled() }, {passive:true});
 Player.prototype.follow = function(){
+  if(Date.now() - (shared.userScroll || 0) < 4000) return;   // even niet: je scrolt zelf
   var e = null;
   this.layers.some(function(L){ e = L.querySelector('.cur'); return !!e });
   if(!e) return;
@@ -229,16 +236,16 @@ Player.prototype.tick = function(t, accent){
 };
 Player.prototype.note = function(voice, n, t, mine){
   var v = n[1], rr = (this.rr = (this.rr + 1) % 2), name;
-  var vol = (.18 + .82 * v * v) * (mine ? 1 : .42);
+  var vol = (.18 + .82 * v * v) * (mine ? 1 : .85);
   t += (Math.random() - .5) * .006;                     // klein beetje menselijk
   vol *= .94 + Math.random() * .12;
   if(voice === 'snare'){
     if(n[2] === 'r'){ name = 'rim'; vol *= 1.1 }
     else name = v < .5 ? (rr ? 'snare1a' : 'snare1b') : v < .78 ? 'snare2a' : (rr ? 'snare3a' : 'snare3b');
   } else if(voice === 'tenor'){
-    name = v < .7 ? 'tenor1a' : (rr ? 'tenor2a' : 'tenor2b'); vol *= .9;
+    name = v < .55 ? 'tenor1a' : (rr ? 'tenor2a' : 'tenor2b'); vol *= 1.35;
   } else {
-    name = v < .5 ? 'bass1a' : v < .8 ? 'bass2a' : 'bass3a'; vol *= 1.15;
+    name = v < .4 ? 'bass1a' : v < .7 ? 'bass2a' : 'bass3a'; vol *= 1.7;
   }
   this.hit(name, t, vol * .8);
 };

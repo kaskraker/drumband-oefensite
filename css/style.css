@@ -351,3 +351,5 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
   .pl-seg button{padding:0 11px;font-size:.95rem}
   .pl-tog{padding:0 11px 0 10px;font-size:.95rem}
 }
+/* de speelbalk is slank genoeg: altijd bovenaan laten plakken, ook op lage schermen */
+@media (max-height:720px){.vmini.inline.stuck.pl{position:sticky}}
