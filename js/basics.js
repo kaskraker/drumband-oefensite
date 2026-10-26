@@ -1,12 +1,12 @@
 /* Pagina "De basics" voor starters, gebaseerd op de cursus "Van Pam tot roffel" */
 window.BASICS_HTML = `
 <div class="basics">
-  <p class="lead">Vier stappen om goed te starten. Twijfel je? Vraag het gerust aan je instructeur.</p>
+  <p class="lead">Vier stappen om goed te starten. Twijfel je? Vraag het gerust aan je lesgever.</p>
 
   <section class="step">
     <h2><span class="n">1</span>Zo sta je</h2>
     <figure class="art">
-      <svg viewBox="0 0 440 400" role="img" aria-label="Zijaanzicht: rechte rug, ellebogen iets van het lijf, trommel op middelhoogte">
+      <svg viewBox="0 0 440 400" role="img" aria-label="Zijaanzicht: rechte rug, ellebogen iets van het lichaam af, trommel op middelhoogte">
         <line x1="10" y1="240" x2="430" y2="240" class="guide"/>
         <text x="10" y="230" class="t muted">middel</text>
         <line x1="112" y1="70" x2="112" y2="260" class="guide red"/>
@@ -35,12 +35,12 @@ window.BASICS_HTML = `
         <path d="M232 126 L196 186" class="lead-line"/>
         <circle cx="194" cy="190" r="5" fill="var(--red)"/>
         <text x="232" y="100" class="t red">Ellebogen iets</text>
-        <text x="232" y="124" class="t red">van je lijf</text>
+        <text x="232" y="124" class="t red">van je lichaam af</text>
       </svg>
     </figure>
     <ul class="ticks">
       <li class="yes"><i></i><span><b>Rechte rug</b>, schouders laag en los.</span></li>
-      <li class="yes"><i></i><span>Armen natuurlijk naast je lijf, <b>ellebogen iets van je lijf</b>.</span></li>
+      <li class="yes"><i></i><span>Armen hangen natuurlijk, <b>ellebogen iets van je lichaam af</b>.</span></li>
       <li class="yes"><i></i><span>De trommel staat of hangt ongeveer op <b>middelhoogte</b>.</span></li>
       <li class="yes"><i></i><span>Je beweegt vooral met je <b>pols en onderarm</b>, niet met je schouder.</span></li>
     </ul>
@@ -124,7 +124,7 @@ window.BASICS_HTML = `
   </section>
   <section class="step">
     <h2><span class="n">4</span>Oefen mee</h2>
-    <p>Speel op elke tik van de metronoom één slag. Het oplichtende vakje zegt welke hand.</p>
+    <p>Speel op elke tik van de metronoom één slag. Het vakje dat oplicht, toont welke hand.</p>
     <div class="seg" role="group" aria-label="Oefening">
       <button type="button" data-pat="RLRLRLRL" aria-pressed="true">Om de beurt</button>
       <button type="button" data-pat="RRLLRRLL" aria-pressed="false">Telkens twee</button>
@@ -140,6 +140,6 @@ window.BASICS_HTML = `
         <button type="button" class="chip" data-rlbpm="80">80</button>
       </span>
     </div>
-    <p class="small">Lukt het rustig en gelijk? Zet het tempo een tikje hoger. Liever traag en juist dan snel en slordig.</p>
+    <p class="small">Lukt het rustig en gelijk? Zet de metronoom dan wat sneller. Liever traag en juist dan snel en slordig.</p>
   </section>
 </div>`;
