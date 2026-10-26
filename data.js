@@ -232,7 +232,10 @@ window.DATA = {
    "parts": [
     {
      "name": "Bas drum",
-     "file": "files/marsvaardig-junior/bas-drum.pdf"
+     "file": "files/marsvaardig-junior/bas-drum.pdf",
+     "levels": [
+      "gevorderd"
+     ]
     },
     {
      "name": "Snare drum",
@@ -240,15 +243,24 @@ window.DATA = {
     },
     {
      "name": "Snare dubbel",
-     "file": "files/marsvaardig-junior/snare-dubbel.pdf"
+     "file": "files/marsvaardig-junior/snare-dubbel.pdf",
+     "levels": [
+      "gevorderd"
+     ]
     },
     {
      "name": "Tenor",
-     "file": "files/marsvaardig-junior/tenor.pdf"
+     "file": "files/marsvaardig-junior/tenor.pdf",
+     "levels": [
+      "gevorderd"
+     ]
     },
     {
      "name": "Tenor dubbel",
-     "file": "files/marsvaardig-junior/tenor-dubbel.pdf"
+     "file": "files/marsvaardig-junior/tenor-dubbel.pdf",
+     "levels": [
+      "gevorderd"
+     ]
     }
    ],
    "levels": [

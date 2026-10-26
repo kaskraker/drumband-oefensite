@@ -181,9 +181,7 @@ body.has-mini{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 .basics .step .n{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;border-radius:50%;background:var(--red);color:var(--bone);font-size:1.3rem}
 .basics .step p{margin:0 0 12px}
 .basics .step .small{font-size:1rem;color:var(--muted);margin:14px 0 0}
-.grip{margin:0 auto 16px;max-width:520px}
-.grip svg{display:block;width:100%;height:auto}
-svg .t{font:700 30px var(--body);fill:var(--ink)}
+svg .t{font:700 var(--fs,22px) var(--body);fill:var(--ink)}
 svg .t.red{fill:var(--red)}
 svg .t.muted{font-weight:600;fill:var(--muted)}
 .ticks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -266,3 +264,33 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .piece-head h1{letter-spacing:-.05em}
 .tile h3{letter-spacing:-.05em}
 .rl b{letter-spacing:-.03em}
+/* basics: illustraties */
+.basics{--wood:#d8b47c}
+.basics .art{margin:0 0 18px}
+.basics .art svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto}
+.basics .art figcaption{text-align:center;font-size:.95rem;font-weight:600;color:var(--muted);margin-top:6px}
+.arts{display:grid;grid-template-columns:1fr;gap:10px;align-items:end;margin-bottom:6px}
+@media (min-width:720px){.arts{grid-template-columns:1.25fr 1fr;gap:24px}}
+.guide{stroke:var(--muted);stroke-width:2.5;stroke-dasharray:8 7;fill:none}
+.guide.red{stroke:var(--red)}
+.lead-line{stroke:var(--red);stroke-width:2.5;fill:none}
+.ghost{stroke:var(--muted);stroke-width:3;stroke-dasharray:10 8;stroke-linecap:round;opacity:.7}
+.swing{transform-box:view-box;transform-origin:70px 150px;transform:rotate(-28deg)}
+.ripple{opacity:0;transform-box:fill-box;transform-origin:center}
+.phases{display:flex;justify-content:center;gap:8px;list-style:none;margin:10px 0 0;padding:0;counter-reset:ph}
+.phases li{counter-increment:ph;padding:6px 12px;border:2px solid var(--ink);border-radius:20px;font-weight:700;font-size:.95rem;white-space:nowrap}
+.phases li::before{content:counter(ph) ". "}
+@media (max-width:420px){.phases li{padding:5px 9px;font-size:.85rem}}
+@media (prefers-reduced-motion:no-preference){
+  .swing{animation:swing 3s infinite}
+  @keyframes swing{
+    0%,35%{transform:rotate(-28deg);animation-timing-function:cubic-bezier(.55,0,1,.6)}
+    47%{transform:rotate(4.5deg);animation-timing-function:cubic-bezier(0,.45,.35,1)}
+    67%,100%{transform:rotate(-28deg)}}
+  .ripple{animation:ripple 3s infinite}
+  @keyframes ripple{0%,46%{opacity:0;transform:scale(.4)}47%{opacity:1;transform:scale(1)}62%,100%{opacity:0;transform:scale(1.6)}}
+  .phases .p1{animation:ph1 3s infinite}.phases .p2{animation:ph2 3s infinite}.phases .p3{animation:ph3 3s infinite}
+  @keyframes ph1{0%,35%{background:var(--red);border-color:var(--red);color:var(--bone)}35.1%,66.9%{background:transparent;border-color:var(--ink);color:var(--ink)}67%,100%{background:var(--red);border-color:var(--red);color:var(--bone)}}
+  @keyframes ph2{0%,34.9%{background:transparent;border-color:var(--ink);color:var(--ink)}35%,47%{background:var(--red);border-color:var(--red);color:var(--bone)}47.1%,100%{background:transparent;border-color:var(--ink);color:var(--ink)}}
+  @keyframes ph3{0%,46.9%{background:transparent;border-color:var(--ink);color:var(--ink)}47%,67%{background:var(--red);border-color:var(--red);color:var(--bone)}67.1%,100%{background:transparent;border-color:var(--ink);color:var(--ink)}}
+}

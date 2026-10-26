@@ -12,6 +12,7 @@ var ICON_DL_S = ICON_DL.replace(/width="22" height="22"/,'width="18" height="18"
 
 var level = store.get('level','gevorderd'); if(level!=='starter' && level!=='gevorderd') level='gevorderd';
 var inLevel = function(x){return x.levels.indexOf(level)>-1};
+var partsOf = function(p){return p.parts.filter(function(x){return !x.levels || inLevel(x)})};
 var video = {tempo:'snel', letter:'intro', rate:1, loop:true};
 var current = {piece:null, part:null, single:false, basics:false, view:''};
 var inlineMount = null;
@@ -73,7 +74,7 @@ function syncRl(){
 /* stap 1: instrument kiezen */
 function choosePage(p){
   return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>'+esc(p.title)+'</h1></div>'+
-    '<section class="sec"><h2>Kies je instrument</h2><div class="picks">'+p.parts.map(function(x){
+    '<section class="sec"><h2>Kies je instrument</h2><div class="picks">'+partsOf(p).map(function(x){
       return '<a class="pick" href="#'+p.id+'/'+stem(x.file)+'">'+esc(x.name)+'</a>'}).join('')+'</div></section>';
 }
 
@@ -156,7 +157,8 @@ function route(){
   } else if(first){
     piece = findPiece(first) || null;
     if(piece){
-      if(piece.parts.length===1){ part = piece.parts[0]; single = true; }
+      var vis = partsOf(piece);
+      if(vis.length===1){ part = vis[0]; single = true; }
       else if(second){ part = piece.parts.filter(function(x){return stem(x.file)===second})[0] || null; }
     }
   }
