@@ -8,7 +8,8 @@ window.DATA = {
    "parts": [
     {
      "name": "Walz Macabre",
-     "file": "files/walz-macabre/walz-macabre.pdf"
+     "file": "files/walz-macabre/walz-macabre.pdf",
+     "listen": "audio/walz-macabre/walz-macabre.mp3"
     }
    ],
    "levels": [

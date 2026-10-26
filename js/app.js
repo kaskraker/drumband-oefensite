@@ -82,6 +82,7 @@ function choosePage(p){
 function instrumentPage(p, part, single){
   var h = '<a class="back" href="#'+(single?'':p.id)+'">← '+(single?'Terug':esc(p.title))+'</a>'+
     '<div class="piece-head"><h1>'+esc(p.title)+'</h1>'+(single?'':'<p class="inst">'+esc(part.name)+'</p>')+'</div>';
+  if(part.listen) h += '<section class="sec"><h2>Luister mee</h2><div class="lesson"><audio class="aud" controls preload="metadata" src="'+enc(part.listen)+'"></audio></div></section>';
   if(part.videos) h += videoSection(part);
   h += '<section class="sec"><h2>Partituur</h2>'+
     '<div class="scorewrap">'+(hasPlayer(p, part)?'<div id="pl-bar" class="vmini inline stuck mx pl" role="group" aria-label="Afspelen"></div><div id="pl-set" class="pl-set mx pl"></div>':'<div id="mini-slot"></div>')+'<div class="scorebody">'+
