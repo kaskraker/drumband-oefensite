@@ -296,3 +296,13 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 }
 
 .piece-head .inst{flex-basis:100%;margin:-6px 0 0;font-size:1.6rem;font-weight:700;color:var(--ink)}
+
+/* tempo's rechtstreeks in de balk */
+.vmini .vrow{flex-wrap:nowrap;align-items:center;gap:12px}
+.vtempos{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}
+.vtempos .chip{min-width:56px;min-height:48px;padding:0 12px;font-size:1.1rem;font-weight:700;justify-content:center}
+.vtempos .chip.now{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.vtempos .chip.goal{background:var(--red);border-color:var(--red);color:var(--bone)}
+.vtempos .chip.goal.now{background:var(--ink);border-color:var(--ink)}
+.vmini .vgo{align-self:flex-start;flex:none}
+@media (max-width:560px){.vmini .vrow{flex-wrap:wrap}.vtempos{flex-basis:100%;order:3}.vmini .vdots{display:flex;margin-left:auto}}

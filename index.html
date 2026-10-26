@@ -51,13 +51,9 @@
 <div id="vmini" class="vmini inline" hidden role="group" aria-label="Metronoom">
     <div class="vrow">
       <button type="button" id="vm-go" class="vgo">Start</button>
-      <button type="button" id="vm-minus" class="vstep" aria-label="Trager">−</button>
-      <button type="button" id="vm-bpm" class="vbpm" aria-label="Tempo aanpassen" aria-expanded="false" aria-controls="vm-pop"><b>90</b> <small>bpm</small></button>
-      <button type="button" id="vm-plus" class="vstep" aria-label="Sneller">+</button>
-      <select id="vm-beats" class="vsel" aria-label="Maat"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select>
+      <div id="vm-pop" class="vtempos" role="group" aria-label="Tempo"></div>
       <div class="vdots" id="vm-dots" aria-hidden="true"></div>
     </div>
-    <div id="vm-pop" class="vpop" hidden></div>
   </div>
 
 <!-- Metronoom -->

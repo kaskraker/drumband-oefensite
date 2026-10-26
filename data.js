@@ -180,6 +180,7 @@ window.DATA = {
   },
   {
    "id": "jungle-express",
+   "beats": 2,
    "title": "Jungle Express",
    "status": "actueel",
    "color": "teal",
@@ -226,6 +227,7 @@ window.DATA = {
   },
   {
    "id": "marsvaardig-junior",
+   "beats": 2,
    "title": "Marsvaardig Junior",
    "status": "classic",
    "color": "burgundy",

@@ -256,17 +256,12 @@ function setPanel(open){
 }
 mbtn.onclick = function(){setPanel(panel.hidden)};
 var pop = $('#vm-pop');
-function setPop(open){ pop.hidden = !open; $('#vm-bpm').setAttribute('aria-expanded', String(open)); $('#vm-bpm').classList.toggle('open', open) }
-$('#vm-bpm').onclick = function(e){ e.stopPropagation(); setPop(pop.hidden) };
-pop.onclick = function(e){ e.stopPropagation() };
-document.addEventListener('click', function(){ setPop(false) });
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') setPop(false) });
 $('#mclose').onclick = function(){setPanel(false)};
 function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
   M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
-  $('#vm-bpm b').textContent = M.bpm; markPop();
+  markPop();
   syncRl();
 }
 var DOTS = ['#dots','#vm-dots'];
@@ -331,14 +326,13 @@ function hold(btn, delta){
   ['pointerup','pointerleave','pointercancel'].forEach(function(ev){btn.addEventListener(ev,end)});
   btn.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setBpm(M.bpm+delta) } });
 }
-hold($('#mminus'),-1); hold($('#mplus'),1); hold($('#vm-minus'),-1); hold($('#vm-plus'),1);
+hold($('#mminus'),-1); hold($('#mplus'),1);
 $('#mminus5').onclick = function(){setBpm(M.bpm-5)};
 $('#mplus5').onclick = function(){setBpm(M.bpm+5)};
 $('#mrange').oninput = function(e){setBpm(+e.target.value)};
 
-function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); $('#vm-beats').value=String(n); buildDots()}
+function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); buildDots()}
 $('#mbeats').onchange = function(e){setBeats(+e.target.value)};
-$('#vm-beats').onchange = function(e){setBeats(+e.target.value)};
 var taps = [];
 $('#mtap').onclick = function(){
   var n = performance.now();
@@ -361,8 +355,9 @@ function markPop(){
 }
 function updatePresets(){
   var s = stepList();
+  var bt = (current.piece && current.piece.beats) || 4; if(bt !== M.beats) setBeats(bt);
   pop.innerHTML = s.list.map(function(b){return '<button type="button" class="chip'+(s.goal.indexOf(b)>-1?' goal':'')+'" data-bpm="'+b+'">'+b+'</button>'}).join('');
-  each('#vm-pop [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm); setPop(false)}});
+  each('#vm-pop [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
   markPop();
   var box = $('#mpresets');
   if(box){
