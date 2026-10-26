@@ -14,7 +14,8 @@ window.DATA = {
    ],
    "levels": [
     "gevorderd"
-   ]
+   ],
+   "beats": 3
   },
   {
    "id": "samba-queen",
