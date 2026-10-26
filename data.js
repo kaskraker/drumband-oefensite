@@ -5,7 +5,7 @@ window.DATA = {
    "title": "Walz Macabre",
    "status": "actueel",
    "color": "burgundy",
-   "score": "files/walz-macabre/partituur.pdf",
+   "score": null,
    "parts": []
   },
   {
@@ -13,7 +13,7 @@ window.DATA = {
    "title": "Samba Queen",
    "status": "actueel",
    "color": "red",
-   "score": "files/samba-queen/partituur.pdf",
+   "score": null,
    "parts": [
     {
      "name": "Agogo bells",
@@ -180,7 +180,7 @@ window.DATA = {
    "title": "Jungle Express",
    "status": "actueel",
    "color": "teal",
-   "score": "files/jungle-express/partituur.pdf",
+   "score": null,
    "parts": [
     {
      "name": "Bassdrum",
@@ -253,7 +253,7 @@ window.DATA = {
    "title": "Full Scope",
    "status": "archief",
    "color": "burgundy",
-   "score": "files/full-scope/partituur.pdf",
+   "score": null,
    "parts": [
     {
      "name": "Bassdrum",
