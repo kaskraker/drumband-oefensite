@@ -6,7 +6,12 @@ window.DATA = {
    "status": "actueel",
    "color": "burgundy",
    "score": null,
-   "parts": []
+   "parts": [
+    {
+     "name": "Walz Macabre",
+     "file": "files/walz-macabre/walz-macabre.pdf"
+    }
+   ]
   },
   {
    "id": "samba-queen",
