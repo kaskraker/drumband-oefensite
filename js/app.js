@@ -92,8 +92,8 @@ function instrumentPage(p, part, single){
 }
 
 /* bij 0.5x/0.75x de versie met 60 beelden per seconde (vloeiender), als die bestaat */
-function slowSrc(src){return video.rate<1 && HAS60 ? src.replace(/\.mp4$/,'-60.mp4') : src}
-var HAS60 = true;
+var SLOW = {'0.5':{s:'-x50',f:2},'0.75':{s:'-x75',f:4/3},'1':{s:'',f:1}};
+function slowSrc(src){return src.replace(/\.mp4$/, SLOW[String(video.rate)].s+'.mp4')}
 var aud = {tempo:'snel', all:false};
 function audioSection(p, part){
   var ab = p.audioBpm || {traag:'traag', snel:'snel'};
@@ -133,15 +133,16 @@ function draw(){
   if(c.basics) wireBasics();
   var v = $('#vid');
   if(v){
-    v.loop = video.loop; v.playbackRate = video.rate; $('#rate').value = String(video.rate);
-    v.addEventListener('loadedmetadata', function(){v.playbackRate = video.rate});
-    v.addEventListener('error', function(){ if(/-60\.mp4/.test(v.currentSrc||v.src)){ HAS60=false; v.src=v.src.replace('-60.mp4','.mp4'); v.load() } });
+    v.loop = video.loop; $('#rate').value = String(video.rate);
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
     $('#rate').onchange = function(e){
+      var old = SLOW[String(video.rate)], nw = SLOW[e.target.value], src = v.getAttribute('src');
+      var t = v.currentTime / old.f * nw.f, was = !v.paused;
       video.rate = parseFloat(e.target.value);
-      var base = v.getAttribute('src').replace('-60.mp4','.mp4'), want = slowSrc(decodeURI(base)), cur = decodeURI(v.getAttribute('src'));
-      if(want !== cur){ var t=v.currentTime, was=!v.paused; v.src=enc(want); v.addEventListener('loadedmetadata', function f(){v.removeEventListener('loadedmetadata',f); v.currentTime=t; v.playbackRate=video.rate; if(was) v.play()}); }
-      v.playbackRate = video.rate; };
+      var base = decodeURI(src).replace(/-x(50|75)\.mp4$/, '.mp4');
+      v.src = enc(slowSrc(base));
+      v.addEventListener('loadedmetadata', function f(){ v.removeEventListener('loadedmetadata', f); try{v.currentTime = t}catch(err){} if(was) v.play(); });
+    };
   }
   var au = $('#aud');
   if(au && c.part){
