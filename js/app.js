@@ -220,16 +220,15 @@ document.addEventListener('keydown', function(e){
 var M = {bpm:parseInt(store.get('bpm','90'),10)||90, beats:4, running:false, ctx:null, next:0, beat:0, timer:null, queue:[], raf:0, wake:null};
 var panel = $('#mpanel'), mbtn = $('#mbtn'), mini = $('#vmini');
 function updateMini(){
-  var slot = $('#mini-slot'), inViewer = !viewer.hidden;
-  if(!inViewer && current.part && slot){
+  var inViewer = !viewer.hidden, slot = inViewer ? $('#vslot') : $('#mini-slot');
+  if(slot && (inViewer || current.part)){
     if(mini.parentNode !== slot) slot.appendChild(mini);
-    mini.classList.remove('fixedbar'); mini.classList.add('inline'); mini.hidden = false;
-    document.body.classList.remove('has-mini');
+    mini.classList.add('inline'); mini.classList.toggle('stuck', !inViewer); mini.hidden = false;
   } else {
     if(mini.parentNode !== document.body) document.body.appendChild(mini);
-    mini.classList.add('fixedbar'); mini.classList.remove('inline');
-    mini.hidden = !inViewer; document.body.classList.toggle('has-mini', inViewer);
+    mini.classList.add('inline'); mini.hidden = true;
   }
+  document.body.classList.remove('has-mini');
 }
 function setPanel(open){
   panel.hidden = !open; mbtn.setAttribute('aria-expanded', String(open));

@@ -239,3 +239,8 @@ svg .t.red{fill:var(--red)}
 .scorewrap{max-width:920px;margin:0 auto}
 .vmini.inline{position:sticky;top:0;z-index:30;margin:0 0 14px;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;background:var(--bone);box-shadow:0 3px 10px rgba(28,18,20,.18)}
 .vmini.inline[hidden]{display:none}
+
+.vslot{padding:10px max(12px,env(safe-area-inset-right,0px)) 0 max(12px,env(safe-area-inset-left,0px))}
+.vslot:empty{display:none}
+.vslot .vmini{max-width:920px;margin:0 auto}
+.vmini.inline:not(.stuck){position:static;box-shadow:none}
