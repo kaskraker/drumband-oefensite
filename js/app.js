@@ -100,24 +100,19 @@ function videoSection(part){
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
   video.letter = L.letter;
   if(!L.video[video.tempo]) video.tempo = L.video.snel ? 'snel' : 'traag';
-  /* één keuze: het tempo in bpm. 0,5× enkel bij een trage versie (of als er maar één tempo is) */
-  var BASE = {traag:65, snel:110}, opts = [];
-  ['traag','snel'].forEach(function(t){
-    if(!L.video[t]) return;
-    var rs = (t==='snel' && L.video.traag) ? [0.75,1] : [0.5,0.75,1];
-    rs.forEach(function(r){ opts.push({t:t, r:r, bpm:Math.round(BASE[t]*r)}) });
-  });
-  opts.sort(function(x,y){return x.bpm-y.bpm});
-  if(!opts.some(function(o){return o.t===video.tempo && o.r===video.rate})) video.rate = 1;
+  /* hoofdkeuze: Traag 65 / Snel 110. Daaronder een menu voor tussentempo's (trager afspelen) */
+  var BASE = {traag:65, snel:110};
+  var rs = (video.tempo==='snel' && L.video.traag) ? [1,0.75] : [1,0.75,0.5];
+  if(rs.indexOf(video.rate)<0) video.rate = 1;
   var src = L.video[video.tempo];
   return '<section class="sec"><h2>Oefenvideo</h2><div class="lesson">'+
-   '<div class="ctl"><div class="seg wrap" role="group" aria-label="Tempo">'+opts.map(function(o,i){
-      var on = o.t===video.tempo && o.r===video.rate;
-      return '<button type="button" data-opt="'+o.t+'|'+o.r+'" aria-pressed="'+on+'">'+(o.r===1?(o.t==='traag'?'Traag ':'Snel '):'')+o.bpm+'</button>'}).join('')+'</div></div>'+
+   '<div class="ctl"><div class="seg" role="group" aria-label="Tempo">'+
+      '<button type="button" data-tempo="traag" aria-pressed="'+(video.tempo==='traag')+'"'+(L.video.traag?'':' disabled')+'>Traag 65</button>'+
+      '<button type="button" data-tempo="snel" aria-pressed="'+(video.tempo==='snel')+'"'+(L.video.snel?'':' disabled')+'>Snel 110</button></div></div>'+
    '<div class="letters" role="group" aria-label="Letter">'+letters.map(function(l){
       return '<button type="button" class="rm" data-letter="'+l.letter+'" aria-pressed="'+(l.letter===L.letter)+'">'+(l.letter==='intro'?'Intro':l.letter)+'</button>'}).join('')+'</div>'+
    '<div class="opts"><label class="chk"><input type="checkbox" id="loop"'+(video.loop?' checked':'')+'> Herhalen</label>'+
-     '</div>'+
+     '<label class="chk">Nog trager <select id="rate">'+rs.map(function(r){var n=Math.round(BASE[video.tempo]*r);return '<option value="'+r+'">'+(r===1?'Gewoon ('+n+' bpm)':n+' bpm')+'</option>'}).join('')+'</select></label></div>'+
    '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(slowSrc(src))+'"></video></div></div></section>';
 }
 
@@ -131,19 +126,16 @@ function draw(){
   if(c.basics) wireBasics();
   var v = $('#vid');
   if(v){
-    v.loop = video.loop;
+    v.loop = video.loop; $('#rate').value = String(video.rate);
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
-  }
-  each('[data-opt]', function(b){b.onclick=function(){
-    var p = b.dataset.opt.split('|'), t = p[0], r = parseFloat(p[1]);
-    if(t === video.tempo && v){
-      var old = SLOW[String(video.rate)], nw = SLOW[String(r)], tt = v.currentTime / old.f * nw.f, was = !v.paused;
-      video.rate = r;
+    $('#rate').onchange = function(e){
+      var old = SLOW[String(video.rate)], nw = SLOW[e.target.value], tt = v.currentTime / old.f * nw.f, was = !v.paused;
+      video.rate = parseFloat(e.target.value);
       v.src = enc(slowSrc(decodeURI(v.getAttribute('src')).replace(/-x(50|75)\.mp4$/, '.mp4')));
       v.addEventListener('loadedmetadata', function f(){ v.removeEventListener('loadedmetadata', f); try{v.currentTime = tt}catch(err){} if(was) v.play(); });
-      each('[data-opt]', function(x){x.setAttribute('aria-pressed', String(x===b))});
-    } else { video.tempo = t; video.rate = r; draw(); }
-  }});
+    };
+  }
+  each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; video.rate=1; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});
   if(c.part && hasPlayer(c.piece, c.part)){
     player = new Player({id:c.piece.id, score:c.piece.score, voice:c.part.voice, partName:c.part.name, pdf:c.part.file, goal:c.piece.bpm, bar:$('#pl-bar'), set:$('#pl-set')});
