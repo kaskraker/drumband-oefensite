@@ -18,12 +18,18 @@ function pieceFiles(p){
 
 /* ---------- pagina's ---------- */
 var video = {vi:0, tempo:'snel', letter:'intro', rate:1, loop:true};
-var current = {piece:null};
-var level = store.get('level','gevorderd'); if(level!=='starter') level='gevorderd';
-var inLevel = function(x){return x.levels.indexOf(level)>-1};
+var current = {piece:null, landing:false, view:''};
+var level = store.get('level',''); if(level!=='starter' && level!=='gevorderd') level='';
+var inLevel = function(x){return x.levels.indexOf(level||'gevorderd')>-1};
+var LEVELNAME = {starter:'Starters', gevorderd:'Gevorderden'};
 
 function dlLink(file, label){
   return '<a class="dl" href="'+enc(file)+'" download="'+esc(label)+'.pdf" aria-label="Download '+esc(label)+'">'+ICON_DL+'</a>';
+}
+
+function landing(){
+  return '<section class="block choose"><h1>Kies je groep</h1><div class="tiles two">'+
+    '<a class="tile" href="#starters"><h3>Starters</h3></a><a class="tile" href="#gevorderden"><h3>Gevorderden</h3></a></div></section>';
 }
 
 function home(){
@@ -32,7 +38,7 @@ function home(){
   var now = DATA.pieces.filter(function(p){return p.status==='actueel' && inLevel(p)});
   var cls = DATA.pieces.filter(function(p){return p.status==='classic' && inLevel(p)});
   var arch = DATA.pieces.filter(function(p){return p.status==='archief' && inLevel(p)});
-  var h = '<div class="seg lvl" role="group" aria-label="Niveau"><button type="button" data-level="starter" aria-pressed="'+(level==='starter')+'">Starters</button><button type="button" data-level="gevorderd" aria-pressed="'+(level==='gevorderd')+'">Gevorderden</button></div>';
+  var h = '<div class="level-line"><strong>'+LEVELNAME[level||'gevorderd']+'</strong><a href="#kies">Andere groep kiezen</a></div>';
   if(now.length) h += '<section class="block"><h2>Nu aan de beurt</h2>'+tiles(now,'')+'</section>';
   if(cls.length) h += '<section class="block"><h2>Classics</h2>'+tiles(cls,'light')+'</section>';
   var groups = {}; var order=[];
@@ -89,7 +95,6 @@ function bindPage(){
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
     $('#rate').onchange = function(e){video.rate = parseFloat(e.target.value); v.playbackRate = video.rate};
   }
-  each('[data-level]', function(b){b.onclick=function(){level=b.dataset.level; store.set('level',level); draw()}});
   each('[data-vi]', function(b){b.onclick=function(){video.vi=+b.dataset.vi; draw()}});
   each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});
@@ -98,7 +103,7 @@ function each(sel, fn){Array.prototype.forEach.call(document.querySelectorAll(se
 
 function draw(){
   var m = $('#main');
-  m.innerHTML = current.piece ? piecePage(current.piece) : home();
+  m.innerHTML = current.landing ? landing() : current.piece ? piecePage(current.piece) : home();
   bindPage();
   updatePresets();
 }
@@ -111,15 +116,18 @@ document.addEventListener('click', function(e){
 function route(){
   var parts = decodeURIComponent(location.hash.slice(1)).split('/');
   var first = parts[0], second = parts[1];
+  if(first==='starters' || first==='gevorderden'){ level = first==='starters' ? 'starter' : 'gevorderd'; store.set('level', level); first = ''; second = ''; }
   var piece = null, doc = null;
   if(first==='oefeningen'){
     if(second) doc = DATA.oefeningen.filter(function(d){return stem(d.file)===second})[0];
   } else if(first){
     piece = findPiece(first) || null;
   }
-  var showPage = piece || null;
-  if(showPage !== current.piece || !$('#main').innerHTML){
-    current.piece = showPage; video.vi=0; video.letter='intro'; draw();
+  var isLanding = first==='kies' || (!level && !piece && first!=='oefeningen');
+  var view = isLanding ? 'kies' : (piece ? piece.id : 'home-'+(level||'gevorderd'));
+  if(view !== current.view){
+    current.view = view; current.landing = isLanding; current.piece = isLanding ? null : piece;
+    video.vi = 0; video.letter = 'intro'; draw();
     if(!doc && !second) window.scrollTo(0,0);
   }
   if(piece && second){
