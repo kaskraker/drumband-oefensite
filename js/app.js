@@ -18,18 +18,13 @@ function pieceFiles(p){
 
 /* ---------- pagina's ---------- */
 var video = {vi:0, tempo:'snel', letter:'intro', rate:1, loop:true};
-var current = {piece:null, landing:false, view:''};
-var level = store.get('level',''); if(level!=='starter' && level!=='gevorderd') level='';
-var inLevel = function(x){return x.levels.indexOf(level||'gevorderd')>-1};
+var current = {piece:null, view:''};
+var level = store.get('level','gevorderd'); if(level!=='starter' && level!=='gevorderd') level='gevorderd';
+var inLevel = function(x){return x.levels.indexOf(level)>-1};
 var LEVELNAME = {starter:'Starters', gevorderd:'Gevorderden'};
 
 function dlLink(file, label){
   return '<a class="dl" href="'+enc(file)+'" download="'+esc(label)+'.pdf" aria-label="Download '+esc(label)+'">'+ICON_DL+'</a>';
-}
-
-function landing(){
-  return '<section class="block choose"><h1>Kies je groep</h1><div class="tiles two">'+
-    '<a class="tile" href="#starters"><h3>Starters</h3></a><a class="tile" href="#gevorderden"><h3>Gevorderden</h3></a></div></section>';
 }
 
 function home(){
@@ -38,7 +33,7 @@ function home(){
   var now = DATA.pieces.filter(function(p){return p.status==='actueel' && inLevel(p)});
   var cls = DATA.pieces.filter(function(p){return p.status==='classic' && inLevel(p)});
   var arch = DATA.pieces.filter(function(p){return p.status==='archief' && inLevel(p)});
-  var h = '<div class="level-line"><strong>'+LEVELNAME[level||'gevorderd']+'</strong><a href="#kies">Andere groep kiezen</a></div>';
+  var h = '';
   if(now.length) h += '<section class="block"><h2>Nu aan de beurt</h2>'+tiles(now,'')+'</section>';
   if(cls.length) h += '<section class="block"><h2>Classics</h2>'+tiles(cls,'light')+'</section>';
   var groups = {}; var order=[];
@@ -103,7 +98,7 @@ function each(sel, fn){Array.prototype.forEach.call(document.querySelectorAll(se
 
 function draw(){
   var m = $('#main');
-  m.innerHTML = current.landing ? landing() : current.piece ? piecePage(current.piece) : home();
+  m.innerHTML = current.piece ? piecePage(current.piece) : home();
   bindPage();
   updatePresets();
 }
@@ -123,10 +118,10 @@ function route(){
   } else if(first){
     piece = findPiece(first) || null;
   }
-  var isLanding = first==='kies' || (!level && !piece && first!=='oefeningen');
-  var view = isLanding ? 'kies' : (piece ? piece.id : 'home-'+(level||'gevorderd'));
+  var view = piece ? piece.id : 'home-'+level;
+  syncLevel();
   if(view !== current.view){
-    current.view = view; current.landing = isLanding; current.piece = isLanding ? null : piece;
+    current.view = view; current.piece = piece;
     video.vi = 0; video.letter = 'intro'; draw();
     if(!doc && !second) window.scrollTo(0,0);
   }
@@ -137,6 +132,16 @@ function route(){
     openViewer(doc.file, doc.title, doc.title);
   } else closeViewer();
 }
+function syncLevel(){
+  each('[data-level]', function(b){ b.setAttribute('aria-pressed', String(b.dataset.level===level)) });
+}
+each('[data-level]', function(b){
+  b.onclick = function(){
+    level = b.dataset.level; store.set('level', level);
+    if(location.hash) location.hash = '';
+    current.view = ''; route();
+  };
+});
 window.addEventListener('hashchange', route);
 
 /* ---------- PDF-lezer ---------- */

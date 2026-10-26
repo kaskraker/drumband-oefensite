@@ -127,13 +127,6 @@ body.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}
 
 
-.level-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:26px}
-.level-line strong{font-size:1.1rem;color:var(--ink)}
-.level-line a{color:var(--red);font-weight:600}
-.choose h1{font-size:1.6rem;color:var(--red);margin-bottom:18px}
-.tiles.two{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-.tiles.two .tile{min-height:200px}
-.tiles.two .tile h3{font-size:clamp(1.5rem,6vw,2rem)}
 
 /* metronoom onder de partituur */
 .vmini{display:flex;align-items:center;gap:8px;background:var(--bone);border-top:2px solid var(--ink);padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
@@ -149,3 +142,18 @@ body.lock{overflow:hidden}
 .vdots i.hit{background:var(--ink)}
 .vdots i.hit.first{background:var(--red);border-color:var(--red)}
 @media (max-width:420px){.vgo{min-width:78px}.vstep{width:46px}.vdots{display:none}}
+
+/* groepskeuze in de kop */
+.lvl{display:inline-flex;border:2px solid var(--bone);border-radius:4px;overflow:hidden}
+.lvl button{background:transparent;border:0;color:var(--bone);min-height:46px;padding:0 18px;font-weight:700;cursor:pointer}
+.lvl button+button{border-left:2px solid var(--bone)}
+.lvl button[aria-pressed="true"]{background:var(--bone);color:var(--red)}
+.lvl button:focus-visible,.mbtn:focus-visible,.brand:focus-visible{outline-color:var(--bone)}
+.site-name{margin-right:0}
+.top .inner{flex-wrap:wrap}
+.top .mbtn{margin-left:auto}
+@media (max-width:640px){
+  .top .inner{gap:12px 12px}
+  .lvl{order:3;flex-basis:100%;display:flex}
+  .lvl button{flex:1}
+}
