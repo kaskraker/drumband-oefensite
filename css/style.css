@@ -251,3 +251,13 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .vmini .vdots{margin-left:auto}
 .vmini{gap:0}
 .rlgo.on{background:var(--ink);border-color:var(--ink)}
+
+/* tempo-keuze: vaste stappen */
+.vmini.inline:not(.stuck){position:relative}
+.vpop{display:flex;flex-wrap:wrap;gap:8px;left:14px;right:auto;max-width:calc(100% - 28px)}
+.vpop[hidden]{display:none}
+.vpop .chip{min-width:64px;min-height:48px;font-size:1.15rem;font-weight:700;justify-content:center}
+.vpop .chip.now{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.vpop .chip.goal{background:var(--red);border-color:var(--red);color:var(--bone)}
+.vpop .chip.goal.now{background:var(--ink);border-color:var(--ink)}
+.vbpm::after{content:"";width:0;height:0;border:6px solid transparent;border-top-color:var(--ink);border-bottom:0;align-self:center;margin-left:2px}

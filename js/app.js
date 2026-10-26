@@ -264,7 +264,7 @@ function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
   M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
-  $('#vm-bpm b').textContent = M.bpm; $('#vm-range').value = M.bpm;
+  $('#vm-bpm b').textContent = M.bpm; markPop();
   syncRl();
 }
 var DOTS = ['#dots','#vm-dots'];
@@ -333,8 +333,7 @@ hold($('#mminus'),-1); hold($('#mplus'),1); hold($('#vm-minus'),-1); hold($('#vm
 $('#mminus5').onclick = function(){setBpm(M.bpm-5)};
 $('#mplus5').onclick = function(){setBpm(M.bpm+5)};
 $('#mrange').oninput = function(e){setBpm(+e.target.value)};
-$('#vm-range').oninput = function(e){setBpm(+e.target.value)};
-$('#vm-m5').onclick = function(){setBpm(M.bpm-5)}; $('#vm-p5').onclick = function(){setBpm(M.bpm+5)};
+
 function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); $('#vm-beats').value=String(n); buildDots()}
 $('#mbeats').onchange = function(e){setBeats(+e.target.value)};
 $('#vm-beats').onchange = function(e){setBeats(+e.target.value)};
@@ -345,15 +344,32 @@ $('#mtap').onclick = function(){
   taps.push(n); if(taps.length>5) taps.shift();
   if(taps.length>=2){ setBpm(60000 / ((taps[taps.length-1]-taps[0])/(taps.length-1))) }
 };
+/* vaste tempo's: trap naar het doeltempo van het stuk */
+function stepList(){
+  var p = current.piece, goal = (p && p.bpm && p.bpm.length) ? p.bpm : null, set = {}, out = [];
+  var top = goal ? Math.max.apply(null, goal) : 120;
+  for(var v=50; v<top; v+=10) set[v]=1;
+  (goal || [top]).forEach(function(g){set[g]=1});
+  Object.keys(set).forEach(function(k){out.push(+k)});
+  out.sort(function(a,b){return a-b});
+  return {list:out, goal:goal || []};
+}
+function markPop(){
+  each('#vm-pop [data-bpm]', function(c){c.classList.toggle('now', +c.dataset.bpm === M.bpm)});
+}
 function updatePresets(){
-  var p = current.piece;
-  ['#mpresets','#vm-presets'].forEach(function(s){
-    var box = $(s);
+  var s = stepList();
+  pop.innerHTML = s.list.map(function(b){return '<button type="button" class="chip'+(s.goal.indexOf(b)>-1?' goal':'')+'" data-bpm="'+b+'">'+b+'</button>'}).join('');
+  each('#vm-pop [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm); setPop(false)}});
+  markPop();
+  var box = $('#mpresets');
+  if(box){
+    var p = current.piece;
     if(p && p.bpm && p.bpm.length){
       box.innerHTML = p.bpm.map(function(b){return '<button type="button" class="chip" data-bpm="'+b+'">'+b+' bpm</button>'}).join('');
-      each(s+' [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
+      each('#mpresets [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
     } else box.innerHTML = '';
-  });
+  }
 }
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState==='visible' && M.running && navigator.wakeLock){ navigator.wakeLock.request('screen').then(function(w){M.wake=w}).catch(function(){}) }
