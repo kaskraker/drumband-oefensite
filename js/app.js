@@ -71,6 +71,9 @@ function instrumentPage(p, part, single){
   return h;
 }
 
+/* bij 0.5x/0.75x de versie met 60 beelden per seconde (vloeiender), als die bestaat */
+function slowSrc(src){return video.rate<1 && HAS60 ? src.replace(/\.mp4$/,'-60.mp4') : src}
+var HAS60 = true;
 function videoSection(part){
   var letters = part.videos.letters;
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
@@ -85,7 +88,7 @@ function videoSection(part){
       return '<button type="button" class="rm" data-letter="'+l.letter+'" aria-pressed="'+(l.letter===L.letter)+'">'+(l.letter==='intro'?'Intro':l.letter)+'</button>'}).join('')+'</div>'+
    '<div class="opts"><label class="chk"><input type="checkbox" id="loop"'+(video.loop?' checked':'')+'> Herhalen</label>'+
      '<label class="chk">Snelheid <select id="rate"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1">1×</option></select></label></div>'+
-   '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(src)+'"></video></div></div></section>';
+   '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(slowSrc(src))+'"></video></div></div></section>';
 }
 
 function draw(){
@@ -98,8 +101,13 @@ function draw(){
   if(v){
     v.loop = video.loop; v.playbackRate = video.rate; $('#rate').value = String(video.rate);
     v.addEventListener('loadedmetadata', function(){v.playbackRate = video.rate});
+    v.addEventListener('error', function(){ if(/-60\.mp4/.test(v.currentSrc||v.src)){ HAS60=false; v.src=v.src.replace('-60.mp4','.mp4'); v.load() } });
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
-    $('#rate').onchange = function(e){video.rate = parseFloat(e.target.value); v.playbackRate = video.rate};
+    $('#rate').onchange = function(e){
+      video.rate = parseFloat(e.target.value);
+      var base = v.getAttribute('src').replace('-60.mp4','.mp4'), want = slowSrc(decodeURI(base)), cur = decodeURI(v.getAttribute('src'));
+      if(want !== cur){ var t=v.currentTime, was=!v.paused; v.src=enc(want); v.addEventListener('loadedmetadata', function f(){v.removeEventListener('loadedmetadata',f); v.currentTime=t; v.playbackRate=video.rate; if(was) v.play()}); }
+      v.playbackRate = video.rate; };
   }
   each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});
