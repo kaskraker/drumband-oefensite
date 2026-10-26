@@ -48,6 +48,43 @@ window.BASICS_HTML = `
 
   <section class="step">
     <h2><span class="n">2</span>Zo pak je de stokken</h2>
+    <figure class="art hand">
+      <svg viewBox="0 0 560 300" role="img" aria-label="Zijaanzicht van de hand: duim op de stok, wijsvinger eronder, andere vingers los rond de stok">
+        <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <!-- hand en onderarm -->
+          <path d="M-6 168 C 40 150, 70 132, 100 118 C 132 102, 178 96, 212 110 C 224 116, 226 132, 216 142 L 150 170 C 128 180, 110 186, 94 188 C 60 204, 28 220, -6 236 Z" fill="var(--skin)" stroke="var(--ink)" stroke-width="3.5"/>
+          <path d="M96 126 C 108 136, 112 150, 108 164" stroke="var(--ink)" stroke-width="2.5" opacity=".45"/>
+          <!-- stok -->
+          <path d="M44 141 H400 L528 146 V154 L400 159 H44 A9 9 0 0 1 44 141 Z" fill="var(--wood)" stroke="var(--ink)" stroke-width="3"/>
+          <ellipse cx="539" cy="150" rx="13" ry="9" fill="var(--wood)" stroke="var(--ink)" stroke-width="3"/>
+          <!-- pink, ring, middelvinger: los rond de stok -->
+          <path d="M122 160 C 122 186, 136 198, 156 196" stroke="var(--ink)" stroke-width="27"/>
+          <path d="M122 160 C 122 186, 136 198, 156 196" stroke="var(--skin)" stroke-width="20"/>
+          <path d="M148 160 C 148 192, 164 206, 186 202" stroke="var(--ink)" stroke-width="28"/>
+          <path d="M148 160 C 148 192, 164 206, 186 202" stroke="var(--skin)" stroke-width="21"/>
+          <path d="M176 160 C 176 194, 192 208, 214 202" stroke="var(--ink)" stroke-width="28"/>
+          <path d="M176 160 C 176 194, 192 208, 214 202" stroke="var(--skin)" stroke-width="21"/>
+          <!-- wijsvinger: om de stok heen -->
+          <path d="M204 126 C 236 128, 254 148, 250 172 C 248 186, 238 192, 226 190" stroke="var(--ink)" stroke-width="30"/>
+          <path d="M204 126 C 236 128, 254 148, 250 172 C 248 186, 238 192, 226 190" stroke="var(--skin)" stroke-width="23"/>
+          <path d="M240 140 C 246 146, 248 152, 248 158" stroke="var(--ink)" stroke-width="2.5" opacity=".45"/>
+          <!-- duim: plat op de stok -->
+          <path d="M150 116 C 190 120, 232 128, 268 132" stroke="var(--ink)" stroke-width="30"/>
+          <path d="M150 116 C 190 120, 232 128, 268 132" stroke="var(--skin)" stroke-width="23"/>
+          <path d="M252 125 C 262 125, 270 128, 271 133" stroke="var(--ink)" stroke-width="2.5"/>
+        </g>
+        <!-- labels -->
+        <path d="M312 82 L268 118" class="lead-line"/>
+        <text x="316" y="78" class="t red">duim óp de stok</text>
+        <path d="M312 206 L262 180" class="lead-line"/>
+        <text x="316" y="214" class="t red">wijsvinger eronder</text>
+        <text x="316" y="240" class="t muted">= draaipunt</text>
+        <path d="M150 256 L162 222" class="lead-line muted"/>
+        <text x="64" y="284" class="t muted">andere vingers los</text>
+      </svg>
+
+      <figcaption>Rechterhand, van opzij gezien</figcaption>
+    </figure>
     <div class="arts">
       <figure class="art">
         <svg viewBox="0 0 600 150" role="img" aria-label="De stok vastnemen op ongeveer 12 centimeter van het achterste uiteinde" style="--fs:28px">
