@@ -53,6 +53,23 @@ function basicsPage(){
   return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>De basics</h1></div>'+window.BASICS_HTML;
 }
 
+function wireBasics(){
+  var go = $('#rl-go'); if(!go) return;
+  go.onclick = toggle;
+  each('[data-pat]', function(b){b.onclick=function(){
+    each('[data-pat]', function(x){x.setAttribute('aria-pressed', String(x===b))});
+    b.dataset.pat.split('').forEach(function(ch,i){ $('#rl').children[i].textContent = ch });
+  }});
+  each('[data-rlbpm]', function(b){b.onclick=function(){ setBpm(+b.dataset.rlbpm); start(); }});
+  syncRl();
+}
+function syncRl(){
+  var go = $('#rl-go'); if(!go) return;
+  go.textContent = M.running ? 'Stop' : 'Start'; go.classList.toggle('on', M.running);
+  each('[data-rlbpm]', function(b){ b.setAttribute('aria-pressed', String(+b.dataset.rlbpm===M.bpm)) });
+  if(!M.running) each('#rl b', function(d){d.classList.remove('on')});
+}
+
 /* stap 1: instrument kiezen */
 function choosePage(p){
   return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>'+esc(p.title)+'</h1></div>'+
@@ -97,6 +114,7 @@ function draw(){
   var c = current;
   $('#main').innerHTML = c.basics ? basicsPage() : c.part ? instrumentPage(c.piece, c.part, c.single) : c.piece ? choosePage(c.piece) : home();
   each('[data-metro]', function(b){b.onclick=function(){setBpm(+b.dataset.metro); start(); setPanel(true)}});
+  if(c.basics) wireBasics();
   var v = $('#vid');
   if(v){
     v.loop = video.loop; v.playbackRate = video.rate; $('#rate').value = String(video.rate);
@@ -217,7 +235,7 @@ document.addEventListener('keydown', function(e){
 });
 
 /* ---------- metronoom ---------- */
-var M = {bpm:parseInt(store.get('bpm','90'),10)||90, beats:4, running:false, ctx:null, next:0, beat:0, timer:null, queue:[], raf:0, wake:null};
+var M = {bpm:parseInt(store.get('bpm','90'),10)||90, beats:4, running:false, ctx:null, next:0, beat:0, count:0, timer:null, queue:[], raf:0, wake:null};
 var panel = $('#mpanel'), mbtn = $('#mbtn'), mini = $('#vmini');
 function updateMini(){
   var inViewer = !viewer.hidden, slot = inViewer ? $('#vslot') : $('#mini-slot');
@@ -247,6 +265,7 @@ function setBpm(v){
   M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
   $('#vm-bpm b').textContent = M.bpm; $('#vm-range').value = M.bpm;
+  syncRl();
 }
 var DOTS = ['#dots','#vm-dots'];
 function buildDots(){
@@ -263,7 +282,7 @@ function tick(time, accent){
 function scheduler(){
   while(M.next < M.ctx.currentTime + 0.12){
     tick(M.next, M.beat===0);
-    M.queue.push({t:M.next, b:M.beat});
+    M.queue.push({t:M.next, b:M.beat, n:M.count++});
     M.next += 60/M.bpm; M.beat = (M.beat+1)%M.beats;
   }
 }
@@ -272,6 +291,8 @@ function paint(){
   while(M.queue.length && M.queue[0].t <= now){
     var q = M.queue.shift();
     DOTS.forEach(function(s){ Array.prototype.forEach.call($(s).children, function(d,i){d.className = i===q.b ? 'hit'+(q.b===0?' first':'') : ''}) });
+    var rl = document.getElementById('rl');
+    if(rl) Array.prototype.forEach.call(rl.children, function(d,i){ d.classList.toggle('on', i===q.n % rl.children.length) });
   }
   M.raf = requestAnimationFrame(paint);
 }
@@ -284,7 +305,7 @@ function start(){
   var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return;
   if(!M.ctx) M.ctx = new AC();
   M.ctx.resume();
-  M.running = true; M.beat = 0; M.queue = []; M.next = M.ctx.currentTime + 0.08;
+  M.running = true; M.beat = 0; M.count = 0; M.queue = []; M.next = M.ctx.currentTime + 0.08;
   M.timer = setInterval(scheduler, 25); scheduler(); M.raf = requestAnimationFrame(paint);
   setRunUi(true);
   if(navigator.wakeLock && navigator.wakeLock.request){ navigator.wakeLock.request('screen').then(function(w){M.wake=w}).catch(function(){}) }
