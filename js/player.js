@@ -84,7 +84,7 @@ Player.prototype.render = function(){
         '<button type="button" data-mix="1" aria-pressed="'+P.all+'">Alles samen</button>'+
       '</div>'+
       '<button type="button" class="pl-tog" data-pl="click" aria-pressed="'+P.click+'">Metronoom</button>'+
-      '<button type="button" class="pl-tog" data-pl="loop" aria-pressed="false">Deel herhalen</button>'+
+      '<button type="button" class="pl-tog" data-pl="loop" aria-pressed="false">Lijn herhalen</button>'+
     '</div>'+
     '<p class="pl-hint">Tik op een maat in de partituur om daar te beginnen.</p>';
   var q = function(s){ return P.el.querySelector(s) || P.set.querySelector(s) };
