@@ -16,13 +16,18 @@ LIST = {
     'rim':     (SN + 'click_rr1.wav', .22, 'rim'),
     'tenor1a': (RO + 'vl2_rr1.wav', .8, 'tenor'),
     'tenor2a': (RO + 'vl3_rr1.wav', .85, 'tenor'), 'tenor2b': (RO + 'vl3_rr2.wav', .85, 'tenor'),
-    'bass1a':  (BD + 'v3_rr1_Sum.wav', 1.3, 'bass'), 'bass2a': (BD + 'v5_rr1_Sum.wav', 1.4, 'bass'),
-    'bass3a':  (BD + 'v7_rr1_Sum.wav', 1.5, 'bass'),
+    # bas: enkel de donkere mf-opnames (v3/v5); de f-opname (v7) heeft te veel galm.
+    # Forte = dezelfde slag, luider afgespeeld.
+    'bass1a':  (BD + 'v3_rr1_Sum.wav', .75, 'bass'), 'bass2a': (BD + 'v5_rr1_Sum.wav', .75, 'bass'),
+    'bass3a':  (BD + 'v5_rr2_Sum.wav', .75, 'bass'),
 }
 
-def load(path):
+# bas: dieper (+6 dB rond 100 Hz) en minder hol (-5 dB rond 500 Hz)
+EQ = {'bass': 'highpass=f=30,bass=g=6:f=100:w=0.8,equalizer=f=500:t=q:w=1:g=-5'}
+
+def load(path, group=''):
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '1', '-ar', str(SR),
-                          '-af', 'highpass=f=35', '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+                          '-af', EQ.get(group, 'highpass=f=35'), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
     return np.frombuffer(raw, np.float32).copy()
 
 def shape(x, length):
@@ -37,7 +42,21 @@ def shape(x, length):
     x[-fade:] *= np.linspace(1, 0, fade) ** 2
     return x
 
-raw = {k: shape(load(BASE + f), L) for k, (f, L, g) in LIST.items()}
+def bass(x):
+    # naklank dempen (strakker, minder galm) en een korte lage stoot eronder (krachtiger)
+    t = np.arange(len(x)) / SR
+    x = x * np.where(t < .06, 1, np.exp(-(t - .06) / .22))
+    f = 48 + 22 * np.exp(-t / .04)                               # 70 -> 48 Hz
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / .18) * np.minimum(1, t / .003)
+    return (x / np.abs(x).max() + .55 * sub).astype(np.float32)
+
+raw = {}
+for k, (f, L, g) in LIST.items():
+    x = load(BASE + f, g)
+    if g == 'bass':
+        on = int(np.argmax(np.abs(x) > np.abs(x).max() * .05)); lvl = np.abs(x).max()
+        x = bass(x[max(0, on - int(SR * .002)):][:int(SR * L)].copy()) * lvl
+    raw[k] = shape(x, L)
 peak = {}
 for k, (f, L, g) in LIST.items(): peak[g] = max(peak.get(g, 0), np.abs(raw[k]).max())
 out, meta, pos = [], {}, 0
