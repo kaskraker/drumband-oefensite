@@ -1,237 +1,80 @@
+<!doctype html>
+<html lang="nl">
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Oefensite Drumband Ingelmunster</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<style>
-/* Layout: smalle werkbalk bovenaan (groep + eigen instrument), daaronder een kaartenraster per stuk; een stuk opent een eigen oefenpagina met partijen, audio en videolessen per rehearsal-letter. */
-:root{
-  --bg:#f1f3f6; --surface:#ffffff; --ink:#111827; --muted:#586174; --line:#dbe0e8;
-  --accent:#c8321f; --accent-ink:#ffffff; --blue:#27457a; --soft:#e9edf4; --mine:#fdeceA;
-  --mine-line:#e9a79d;
-  --f-display:'Barlow Condensed','Arial Narrow',Impact,sans-serif;
-  --f-body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0e131c; --surface:#161d29; --ink:#eef1f6; --muted:#9aa4b6; --line:#273041;
-  --accent:#ef5a43; --accent-ink:#14100f; --blue:#8fb0f0; --soft:#1e2736; --mine:#2c1b1a; --mine-line:#7a3a33;
-  color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e131c; --surface:#161d29; --ink:#eef1f6; --muted:#9aa4b6; --line:#273041;
-  --accent:#ef5a43; --accent-ink:#14100f; --blue:#8fb0f0; --soft:#1e2736; --mine:#2c1b1a; --mine-line:#7a3a33;
-  color-scheme:dark}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
-.wrap{max-width:1040px;margin:0 auto}
-a{color:inherit}
-button,select,input{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
-h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.01em}
+<meta name="description" content="Partituren, oefenvideo's en een metronoom voor de leden van de drumband van Kunst Veredelt Ingelmunster.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#BA0C2F">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preload" href="fonts/lulo-clean-bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/tt-commons-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <a href="#" class="brand" aria-label="Drumband Ingelmunster, naar het begin"><img src="img/logo-bone.png" alt="Drumband Ingelmunster" width="900" height="450"></a>
+    <p class="site-name">Oefensite</p>
+    <button type="button" id="mbtn" class="mbtn" aria-expanded="false" aria-controls="mpanel">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8l-2.5-16h-3z"/><path d="M12 15l5-8"/></svg>
+  <span class="lbl">Metronoom</span>
+</button>
+  </div>
+</header>
 
-/* header */
-header{padding-block:22px 10px}
-.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
-.brand h1{font-size:clamp(2rem,6vw,3.1rem);text-transform:uppercase}
-.brand span{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.bar{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:16px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
-.seg{display:inline-flex;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
-.seg button{background:transparent;border:0;padding:8px 16px;cursor:pointer;font-weight:700;min-height:44px}
-.seg button+button{border-left:2px solid var(--ink)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.mine{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.mine label{font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-select,.search{background:var(--surface);border:2px solid var(--line);border-radius:6px;padding:8px 12px;min-height:44px}
-.search{flex:1 1 200px;min-width:0}
-.tabs{display:flex;gap:22px;margin-top:18px}
-.tabs button{background:none;border:0;padding:6px 0;cursor:pointer;font-family:var(--f-display);font-size:1.5rem;font-weight:700;text-transform:uppercase;color:var(--muted);border-bottom:4px solid transparent}
-.tabs button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+<main id="main" class="inner"></main>
 
-main{padding-top:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:16px;text-decoration:none;min-width:0;transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--ink);transform:translateY(-2px)}
-.card h2{font-size:1.7rem}
-.card .sub{color:var(--muted);font-size:.92rem;margin:0}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
-.tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--soft);color:var(--blue);font-weight:600}
-.tag.me{background:var(--accent);color:var(--accent-ink)}
-.empty{padding:40px 0;color:var(--muted)}
+<footer class="inner foot">Alleen voor leden van de drumband. Deel de link niet buiten de vereniging.</footer>
 
-/* detail */
-.back{display:inline-flex;align-items:center;gap:6px;margin:6px 0 14px;background:none;border:0;cursor:pointer;font-weight:700;color:var(--blue);padding:8px 0;min-height:44px}
-.pt{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
-.pt h2{font-size:clamp(2.4rem,8vw,4rem);text-transform:uppercase}
-.note{font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
-.sec{margin-top:30px}
-.sec>h3{font-size:1.5rem;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.sec>h3::after{content:"";flex:1;height:2px;background:var(--line)}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);border-radius:6px;padding:10px 16px;font-weight:700;text-decoration:none;min-height:44px;border:0}
-.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
-.btn:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.part{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:2px solid var(--line);border-radius:6px;padding:10px 14px;text-decoration:none;font-weight:600;min-width:0;min-height:48px}
-.part span:first-child{overflow-wrap:anywhere}
-.part:hover{border-color:var(--ink)}
-.part.mine{background:var(--mine);border-color:var(--mine-line)}
-.part small{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;white-space:nowrap}
-.part.mine small{color:var(--accent);font-weight:600}
-audio{width:100%;max-width:560px;display:block}
-
-/* video's */
-.lesson{background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:16px}
-.ctl{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-bottom:14px}
-.letters{display:flex;flex-wrap:wrap;gap:8px}
-.rm{min-width:48px;min-height:48px;padding:0 12px;border:2px solid var(--ink);background:transparent;border-radius:3px;font-family:var(--f-display);font-size:1.5rem;font-weight:700;cursor:pointer;text-transform:uppercase}
-.rm[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.rm[disabled]{opacity:.35;cursor:not-allowed}
-.stage{max-width:760px}
-.stage video,.stage img{width:100%;height:auto;display:block;border-radius:6px;background:var(--soft)}
-.stage img{border:2px solid var(--line);background:#fff}
-.cap{font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 6px}
-.chk{display:inline-flex;align-items:center;gap:8px;min-height:44px}
-.chk input{width:20px;height:20px;accent-color:var(--accent)}
-.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.doc{background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:16px;text-decoration:none;display:flex;flex-direction:column;gap:6px;min-width:0}
-.doc:hover{border-color:var(--ink)}
-.doc b{font-size:1.1rem}
-.doc span{color:var(--muted);font-size:.92rem}
-footer{margin-top:44px;padding-top:16px;border-top:2px solid var(--line);color:var(--muted);font-size:.88rem}
-@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
-</style>
-
-<div class="wrap">
-  <header>
-    <div class="brand"><h1>Oefensite</h1><span>Drumband · Kunst Veredelt Ingelmunster</span></div>
-    <div class="bar">
-      <div class="seg" role="group" aria-label="Groep">
-        <button type="button" id="g-drumband" data-g="drumband">Drumband</button>
-        <button type="button" id="g-kleine" data-g="kleine">Kleine trommelaars</button>
-      </div>
-      <div class="mine"><label for="myinstr">Mijn instrument</label>
-        <select id="myinstr"></select></div>
-      <input class="search" id="q" type="search" placeholder="Zoek een stuk" aria-label="Zoek een stuk">
-    </div>
-    <nav class="tabs" id="tabs" aria-label="Onderdelen">
-      <button type="button" id="t-stukken" data-t="stukken">Stukken</button>
-      <button type="button" id="t-oefenen" data-t="oefenen">Oefeningen</button>
-    </nav>
-  </header>
-  <main id="main"></main>
-  <footer>Alleen voor leden. Deel de link niet buiten de vereniging, een deel van de partituren is aangekocht.</footer>
+<!-- PDF-lezer -->
+<div id="viewer" class="viewer" role="dialog" aria-modal="true" aria-label="Partituur" hidden>
+  <div class="vbar">
+    <button type="button" id="vclose" class="vbtn" aria-label="Sluiten">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <h2 id="vtitle"></h2>
+    <button type="button" id="vmetro" class="vbtn" aria-label="Metronoom">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8l-2.5-16h-3z"/><path d="M12 15l5-8"/></svg>
+    </button>
+    <a id="vdl" class="btn" href="#" download>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+      <span>Download</span>
+    </a>
+  </div>
+  <div id="vpages" class="vpages"></div>
 </div>
 
-<script>
-const DATA = {"pieces": [{"id": "back-to-bozzio", "title": "Back to Bozzio", "group": "drumband", "note": "", "score": {"label": "Volledige partituur", "file": "files/back-to-bozzio/partituur.pdf"}, "parts": [{"instrument": "Bassdrum", "cat": "bas", "file": "files/back-to-bozzio/bassdrum.pdf"}, {"instrument": "Bekken", "cat": "bekken", "file": "files/back-to-bozzio/bekken.pdf"}, {"instrument": "Bongo's", "cat": "hand", "file": "files/back-to-bozzio/bongo-s.pdf"}, {"instrument": "Snare", "cat": "snare", "file": "files/back-to-bozzio/snare.pdf"}, {"instrument": "Tamboerijn", "cat": "klein", "file": "files/back-to-bozzio/tamboerijn.pdf"}, {"instrument": "Tom toms", "cat": "tenor", "file": "files/back-to-bozzio/tom-toms.pdf"}], "audio": [], "images": []}, {"id": "daft-punk-medley", "title": "Daft Punk Medley", "group": "drumband", "note": "Arrangement: F. Verheecken", "score": {"label": "Volledige partituur", "file": "files/daft-punk-medley/partituur.pdf"}, "parts": [{"instrument": "Bongo's", "cat": "hand", "file": "files/daft-punk-medley/bongo-s.pdf"}, {"instrument": "Concert snare drum", "cat": "snare", "file": "files/daft-punk-medley/concert-snare-drum.pdf"}, {"instrument": "Conga's", "cat": "hand", "file": "files/daft-punk-medley/conga-s.pdf"}, {"instrument": "Drumset", "cat": "overig", "file": "files/daft-punk-medley/drumset.pdf"}, {"instrument": "Klokkenspel", "cat": "melodisch", "file": "files/daft-punk-medley/klokkenspel.pdf"}, {"instrument": "Marimba (2 spelers)", "cat": "melodisch", "file": "files/daft-punk-medley/marimba-2-spelers.pdf"}, {"instrument": "Pauken", "cat": "melodisch", "file": "files/daft-punk-medley/pauken.pdf"}, {"instrument": "Shaker", "cat": "klein", "file": "files/daft-punk-medley/shaker.pdf"}, {"instrument": "Temple blocks", "cat": "klein", "file": "files/daft-punk-medley/temple-blocks.pdf"}, {"instrument": "Vibrafoon", "cat": "melodisch", "file": "files/daft-punk-medley/vibrafoon.pdf"}, {"instrument": "Xylofoon", "cat": "melodisch", "file": "files/daft-punk-medley/xylofoon.pdf"}], "audio": [], "images": []}, {"id": "festival-of-the-new-sun", "title": "Festival of the New Sun", "group": "drumband", "note": "", "score": {"label": "Volledige partituur", "file": "files/festival-of-the-new-sun/partituur.pdf"}, "parts": [{"instrument": "2 High Toms", "cat": "tenor", "file": "files/festival-of-the-new-sun/2-high-toms.pdf"}, {"instrument": "2 Low Toms", "cat": "tenor", "file": "files/festival-of-the-new-sun/2-low-toms.pdf"}, {"instrument": "Percussion", "cat": "klein", "file": "files/festival-of-the-new-sun/percussion.pdf"}, {"instrument": "Piccolo Snare Drum", "cat": "snare", "file": "files/festival-of-the-new-sun/piccolo-snare-drum.pdf"}, {"instrument": "Snare Drum", "cat": "snare", "file": "files/festival-of-the-new-sun/snare-drum.pdf"}, {"instrument": "Timpani", "cat": "melodisch", "file": "files/festival-of-the-new-sun/timpani.pdf"}], "audio": [{"label": "Luisteropname", "file": "files/festival-of-the-new-sun/festival-of-the-new-sun.mp3"}], "images": []}, {"id": "full-scope", "title": "Full Scope", "group": "drumband", "note": "L. Camp", "score": {"label": "Volledige partituur", "file": "files/full-scope/partituur.pdf"}, "parts": [{"instrument": "Bassdrum", "cat": "bas", "file": "files/full-scope/bassdrum.pdf"}, {"instrument": "Bekken", "cat": "bekken", "file": "files/full-scope/bekken.pdf"}, {"instrument": "Drumset", "cat": "overig", "file": "files/full-scope/drumset.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/full-scope/snare-drum.pdf"}, {"instrument": "Tenor", "cat": "tenor", "file": "files/full-scope/tenor.pdf"}], "audio": [], "images": []}, {"id": "jungle-express", "title": "Jungle Express", "group": "drumband", "note": "", "score": {"label": "Volledige partituur", "file": "files/jungle-express/partituur.pdf"}, "parts": [{"instrument": "Bassdrum", "cat": "bas", "file": "files/jungle-express/bassdrum.pdf"}, {"instrument": "Bekken", "cat": "bekken", "file": "files/jungle-express/bekken.pdf"}, {"instrument": "Bongo's", "cat": "hand", "file": "files/jungle-express/bongo-s.pdf"}, {"instrument": "Doffe drum", "cat": "snare", "file": "files/jungle-express/doffe-drum.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/jungle-express/snare-drum.pdf"}, {"instrument": "Tamboerijn", "cat": "klein", "file": "files/jungle-express/tamboerijn.pdf"}, {"instrument": "Tenor drum", "cat": "tenor", "file": "files/jungle-express/tenor-drum.pdf"}, {"instrument": "Tim Toms", "cat": "tenor", "file": "files/jungle-express/tim-toms.pdf"}], "audio": [], "images": []}, {"id": "to-the-roots", "title": "To the Roots", "group": "drumband", "note": "Jan Schipper", "score": {"label": "Volledige partituur", "file": "files/to-the-roots/partituur.pdf"}, "parts": [{"instrument": "Bassdrum", "cat": "bas", "file": "files/to-the-roots/bassdrum.pdf"}, {"instrument": "Bekken", "cat": "bekken", "file": "files/to-the-roots/bekken.pdf"}, {"instrument": "Bongo's", "cat": "hand", "file": "files/to-the-roots/bongo-s.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/to-the-roots/snare-drum.pdf"}, {"instrument": "Tamboerijn", "cat": "klein", "file": "files/to-the-roots/tamboerijn.pdf"}, {"instrument": "Tom Toms", "cat": "tenor", "file": "files/to-the-roots/tom-toms.pdf"}], "audio": [], "images": []}, {"id": "samba-queen", "title": "Samba Queen", "group": "drumband", "note": "", "score": {"label": "Volledige partituur", "file": "files/samba-queen/partituur.pdf"}, "parts": [{"instrument": "Agogo bells", "cat": "hand", "file": "files/samba-queen/agogo-bells.pdf"}, {"instrument": "Bassdrum", "cat": "bas", "file": "files/samba-queen/bassdrum.pdf"}, {"instrument": "Bekken", "cat": "bekken", "file": "files/samba-queen/bekken.pdf"}, {"instrument": "Bongos", "cat": "hand", "file": "files/samba-queen/bongos.pdf"}, {"instrument": "Fielddrum", "cat": "snare", "file": "files/samba-queen/fielddrum.pdf"}, {"instrument": "Snaredrum", "cat": "snare", "file": "files/samba-queen/snaredrum.pdf"}, {"instrument": "Tim toms", "cat": "tenor", "file": "files/samba-queen/tim-toms.pdf"}], "audio": [], "images": [], "videos": {"tempi": {"traag": "Traag (65 bpm)", "snel": "Snel (110 bpm)"}, "instruments": [{"instrument": "Snare drum", "cat": "snare", "letters": [{"letter": "intro", "video": {"traag": "video/samba-queen/snaredrum-traag-intro.mp4", "snel": "video/samba-queen/snaredrum-snel-intro.mp4"}, "image": "img/samba-queen/snaredrum-intro.jpg"}, {"letter": "A", "video": {"traag": "video/samba-queen/snaredrum-traag-A.mp4", "snel": "video/samba-queen/snaredrum-snel-A.mp4"}, "image": "img/samba-queen/snaredrum-A.jpg"}, {"letter": "B", "video": {"traag": "video/samba-queen/snaredrum-traag-B.mp4", "snel": "video/samba-queen/snaredrum-snel-B.mp4"}, "image": "img/samba-queen/snaredrum-B.jpg"}, {"letter": "C", "video": {"traag": "video/samba-queen/snaredrum-traag-C.mp4", "snel": "video/samba-queen/snaredrum-snel-C.mp4"}, "image": "img/samba-queen/snaredrum-C.jpg"}, {"letter": "D", "video": {"traag": "video/samba-queen/snaredrum-traag-D.mp4", "snel": "video/samba-queen/snaredrum-snel-D.mp4"}, "image": "img/samba-queen/snaredrum-D.jpg"}, {"letter": "E", "video": {"traag": "video/samba-queen/snaredrum-traag-E.mp4", "snel": "video/samba-queen/snaredrum-snel-E.mp4"}, "image": "img/samba-queen/snaredrum-E.jpg"}, {"letter": "F", "video": {"traag": "video/samba-queen/snaredrum-traag-F.mp4", "snel": "video/samba-queen/snaredrum-snel-F.mp4"}, "image": "img/samba-queen/snaredrum-F.jpg"}, {"letter": "G", "video": {"traag": "video/samba-queen/snaredrum-traag-G.mp4", "snel": "video/samba-queen/snaredrum-snel-G.mp4"}, "image": "img/samba-queen/snaredrum-G.jpg"}]}, {"instrument": "Field drum", "cat": "snare", "letters": [{"letter": "intro", "video": {"traag": "video/samba-queen/fielddrum-traag-intro.mp4", "snel": "video/samba-queen/fielddrum-snel-intro.mp4"}, "image": "img/samba-queen/fielddrum-intro.jpg"}, {"letter": "A", "video": {"traag": "video/samba-queen/fielddrum-traag-A.mp4", "snel": "video/samba-queen/fielddrum-snel-A.mp4"}, "image": "img/samba-queen/fielddrum-A.jpg"}, {"letter": "B", "video": {"traag": "video/samba-queen/fielddrum-traag-B.mp4", "snel": "video/samba-queen/fielddrum-snel-B.mp4"}, "image": "img/samba-queen/fielddrum-B.jpg"}, {"letter": "C", "video": {"traag": "video/samba-queen/fielddrum-traag-C.mp4", "snel": "video/samba-queen/fielddrum-snel-C.mp4"}, "image": "img/samba-queen/fielddrum-C.jpg"}, {"letter": "D", "video": {"traag": "video/samba-queen/fielddrum-traag-D.mp4", "snel": "video/samba-queen/fielddrum-snel-D.mp4"}, "image": "img/samba-queen/fielddrum-D.jpg"}, {"letter": "E", "video": {"traag": "video/samba-queen/fielddrum-traag-E.mp4", "snel": "video/samba-queen/fielddrum-snel-E.mp4"}, "image": "img/samba-queen/fielddrum-E.jpg"}, {"letter": "F", "video": {"traag": "video/samba-queen/fielddrum-traag-F.mp4", "snel": "video/samba-queen/fielddrum-snel-F.mp4"}, "image": "img/samba-queen/fielddrum-F.jpg"}, {"letter": "G", "video": {"traag": "video/samba-queen/fielddrum-traag-G.mp4", "snel": "video/samba-queen/fielddrum-snel-G.mp4"}, "image": "img/samba-queen/fielddrum-G.jpg"}]}]}}, {"id": "walz-macabre", "title": "Walz Macabre", "group": "drumband", "note": "", "parts": [], "audio": [], "images": [], "score": {"label": "Partituur", "file": "files/walz-macabre/partituur.pdf"}}, {"id": "youre-so-cool", "title": "You're so cool", "group": "drumband", "note": "Toffe bende (melodisch)", "score": null, "parts": [{"instrument": "Bass Drum (optioneel)", "cat": "bas", "file": "files/youre-so-cool/bass-drum-opt.pdf"}, {"instrument": "Bass Marimba", "cat": "melodisch", "file": "files/youre-so-cool/bass-marimba.pdf"}, {"instrument": "Floor Tom", "cat": "tenor", "file": "files/youre-so-cool/floor-tom.pdf"}, {"instrument": "Glockenspiel (optioneel)", "cat": "melodisch", "file": "files/youre-so-cool/glockenspiel-opt.pdf"}, {"instrument": "Marimba", "cat": "melodisch", "file": "files/youre-so-cool/marimba.pdf"}, {"instrument": "Marimba 1", "cat": "melodisch", "file": "files/youre-so-cool/marimba-1.pdf"}, {"instrument": "Marimba 2", "cat": "melodisch", "file": "files/youre-so-cool/marimba-2.pdf"}, {"instrument": "Marimba 3", "cat": "melodisch", "file": "files/youre-so-cool/marimba-3.pdf"}, {"instrument": "Marimba 4", "cat": "melodisch", "file": "files/youre-so-cool/marimba-4.pdf"}, {"instrument": "Tambourine", "cat": "klein", "file": "files/youre-so-cool/tambourine.pdf"}, {"instrument": "Timpani", "cat": "melodisch", "file": "files/youre-so-cool/timpani.pdf"}, {"instrument": "Vibraphone 1", "cat": "melodisch", "file": "files/youre-so-cool/vibraphone-1.pdf"}, {"instrument": "Vibraphone 2", "cat": "melodisch", "file": "files/youre-so-cool/vibraphone-2.pdf"}], "audio": [{"label": "Luisteropname", "file": "files/youre-so-cool/youre-so-cool.mp3"}], "images": []}, {"id": "basic-beats", "title": "Basic Beats", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/basic-beats/partituur.pdf"}, "parts": [{"instrument": "Bas Drum", "cat": "bas", "file": "files/basic-beats/bas-drum.pdf"}, {"instrument": "Field Drum 1", "cat": "snare", "file": "files/basic-beats/field-drum-1.pdf"}, {"instrument": "Field Drum 2", "cat": "snare", "file": "files/basic-beats/field-drum-2.pdf"}, {"instrument": "Snare Drum", "cat": "snare", "file": "files/basic-beats/snare-drum.pdf"}], "audio": [], "images": []}, {"id": "conge", "title": "Congé", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/conge/partituur.pdf"}, "parts": [{"instrument": "Bas drums", "cat": "bas", "file": "files/conge/conge-bas-drums.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/conge/conge-snare-drum.pdf"}], "audio": [], "images": []}, {"id": "nieuwe-conge", "title": "Nieuwe congé", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/nieuwe-conge/partituur.pdf"}, "parts": [{"instrument": "Bas drums", "cat": "bas", "file": "files/nieuwe-conge/bas-drums.pdf"}, {"instrument": "Bongo's, toms", "cat": "tenor", "file": "files/nieuwe-conge/bongo-s-toms.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/nieuwe-conge/snare-drum.pdf"}], "audio": [], "images": []}, {"id": "flotsam-jetsam", "title": "Flotsam & Jetsam", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/flotsam-jetsam/partituur.pdf"}, "parts": [{"instrument": "Player 1", "cat": "overig", "file": "files/flotsam-jetsam/player-1.pdf"}, {"instrument": "Player 2", "cat": "overig", "file": "files/flotsam-jetsam/player-2.pdf"}, {"instrument": "Player 3", "cat": "overig", "file": "files/flotsam-jetsam/player-3.pdf"}, {"instrument": "Player 4", "cat": "overig", "file": "files/flotsam-jetsam/player-4.pdf"}], "audio": [{"label": "Luisteropname", "file": "files/flotsam-jetsam/flotsam-and-jetsam.mp3"}], "images": []}, {"id": "jingle-bells", "title": "Jingle Bells", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/jingle-bells/partituur.pdf"}, "parts": [{"instrument": "Glockenspiel", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-glockenspiel.pdf"}, {"instrument": "Marimba 1", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-marimba-1.pdf"}, {"instrument": "Marimba 2", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-marimba-2.pdf"}, {"instrument": "Marimba 3", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-marimba-3.pdf"}, {"instrument": "Sleigh bells", "cat": "klein", "file": "files/jingle-bells/jingle-bells-sleigh-bells.pdf"}, {"instrument": "Snare drum, Bass drum", "cat": "snare", "file": "files/jingle-bells/jingle-bells-snare-drum-bass-drum.pdf"}, {"instrument": "Timpani", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-timpani.pdf"}, {"instrument": "Xylophone", "cat": "melodisch", "file": "files/jingle-bells/jingle-bells-xylophone.pdf"}, {"instrument": "Ride bekken", "cat": "bekken", "file": "files/jingle-bells/ride-bekken.pdf"}, {"instrument": "Triangel", "cat": "klein", "file": "files/jingle-bells/triangel.pdf"}], "audio": [{"label": "Luisteropname", "file": "files/jingle-bells/jingle-bells.mp3"}], "images": [{"label": "Jingle Bells (afbeelding)", "file": "files/jingle-bells/jingle-bells.jpeg"}]}, {"id": "lattes-on-the-house", "title": "Lattes on the House", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/lattes-on-the-house/partituur.pdf"}, "parts": [{"instrument": "Claves", "cat": "hand", "file": "files/lattes-on-the-house/claves.pdf"}, {"instrument": "Conga", "cat": "hand", "file": "files/lattes-on-the-house/conga.pdf"}, {"instrument": "Quinto", "cat": "hand", "file": "files/lattes-on-the-house/quinto.pdf"}, {"instrument": "Tambourine", "cat": "klein", "file": "files/lattes-on-the-house/tambourine.pdf"}, {"instrument": "Tumba", "cat": "hand", "file": "files/lattes-on-the-house/tumba.pdf"}], "audio": [{"label": "Luisteropname", "file": "files/lattes-on-the-house/lattes-on-the-house.mp3"}], "images": []}, {"id": "marsvaardig-junior", "title": "Marsvaardig Junior", "group": "kleine", "note": "", "score": null, "parts": [{"instrument": "Bas drum", "cat": "bas", "file": "files/marsvaardig-junior/bas-drum.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/marsvaardig-junior/snare-drum.pdf"}, {"instrument": "Snare dubbel", "cat": "snare", "file": "files/marsvaardig-junior/snare-dubbel.pdf"}, {"instrument": "Tenor", "cat": "tenor", "file": "files/marsvaardig-junior/tenor.pdf"}, {"instrument": "Tenor dubbel", "cat": "tenor", "file": "files/marsvaardig-junior/tenor-dubbel.pdf"}], "audio": [], "images": []}, {"id": "percussion-party", "title": "Percussion Party", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/percussion-party/partituur.pdf"}, "parts": [{"instrument": "Claves", "cat": "hand", "file": "files/percussion-party/claves.pdf"}, {"instrument": "Grote trom", "cat": "bas", "file": "files/percussion-party/grote-trom.pdf"}, {"instrument": "Hi-hat, cymbaal", "cat": "bekken", "file": "files/percussion-party/hihat-cymbaal.pdf"}, {"instrument": "Koebel", "cat": "klein", "file": "files/percussion-party/koebel.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/percussion-party/snare-drum.pdf"}, {"instrument": "Tamboerijn", "cat": "klein", "file": "files/percussion-party/tamboerijn.pdf"}], "audio": [], "images": []}, {"id": "starters-on-stage", "title": "Starters on Stage", "group": "kleine", "note": "", "score": {"label": "Volledige partituur", "file": "files/starters-on-stage/partituur.pdf"}, "parts": [{"instrument": "Bongo's", "cat": "hand", "file": "files/starters-on-stage/bongo-s.pdf"}, {"instrument": "Field drum", "cat": "snare", "file": "files/starters-on-stage/field-drum.pdf"}, {"instrument": "Grote trom", "cat": "bas", "file": "files/starters-on-stage/grote-trom.pdf"}, {"instrument": "Hi-hat", "cat": "bekken", "file": "files/starters-on-stage/hi-hat.pdf"}, {"instrument": "Snare drum", "cat": "snare", "file": "files/starters-on-stage/snare-drum.pdf"}, {"instrument": "Timbales", "cat": "tenor", "file": "files/starters-on-stage/timbales.pdf"}], "audio": [], "images": []}], "oefenen": {"drumband": [{"label": "Opwarming – Drum rudiments", "desc": "Warming-up voor aan het begin van de repetitie.", "file": "files/oefenen/opwarming-drum-rudiments.pdf", "type": "pdf"}, {"label": "Pas-rudiments", "desc": "De basisrudiments om te oefenen.", "file": "files/oefenen/pas-rudiments.pdf", "type": "pdf"}], "kleine": [{"label": "Vier eenvoudige ritme-oefeningen", "desc": "", "file": "files/oefenen/4-simple-rhythm-exercises.pdf", "type": "pdf"}, {"label": "Rhythm book for warm-ups", "desc": "", "file": "files/oefenen/rhythm-book-for-warmups.pdf", "type": "pdf"}, {"label": "Rhythm practice sheet (beginners)", "desc": "", "file": "files/oefenen/rhythm-practice-sheet-beginning.pdf", "type": "pdf"}, {"label": "Zestiende noten", "desc": "Variaties met zestiende noten.", "file": "files/oefenen/zestiende-noten.pdf", "type": "pdf"}, {"label": "Cursus trommelen", "desc": "Grote cursus (±12 MB).", "file": "files/oefenen/cursus-trommelen.pdf", "type": "pdf"}, {"label": "Free Drum Book", "desc": "Oefenboek voor beginners.", "file": "files/oefenen/free-drum-book.pdf", "type": "pdf"}]}};
-const CATS = {alles:"Alles tonen", snare:"Snare en field drum", bas:"Bassdrum en grote trom", tenor:"Tenor, toms en timbales", hand:"Bongo's, conga's, claves", bekken:"Bekken en hi-hat", klein:"Tamboerijn en klein slagwerk", melodisch:"Melodisch (marimba, xylofoon, pauken)", overig:"Andere partijen"};
-const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const enc = p => p.split('/').map(encodeURIComponent).join('/');
-const store = {get(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-const state = {group: store.get('group','drumband'), tab:'stukken', my: store.get('my','alles'), q:'', piece:null,
-               vi:0, tempo:'snel', letter:'intro', rate:1, loop:true};
+<!-- Metronoom -->
 
-function render(){
-  document.querySelectorAll('[data-g]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.g===state.group));
-  document.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.t===state.tab));
-  $('#tabs').hidden = !!state.piece; $('.search').hidden = !!state.piece;
-  $('#main').innerHTML = state.piece ? detail(state.piece) : (state.tab==='stukken' ? list() : oefen());
-  if(state.piece) bindDetail();
-}
+<section id="mpanel" class="mpanel" aria-label="Metronoom" hidden>
+  <div class="mtop">
+    <div class="bpm"><span id="bpmv">90</span><small>bpm</small></div>
+    <button type="button" id="mclose" class="vbtn" aria-label="Metronoom sluiten">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+  <div class="mrow">
+    <button type="button" class="step" id="mminus5" aria-label="5 bpm trager">−5</button>
+    <button type="button" class="step" id="mminus" aria-label="1 bpm trager">−1</button>
+    <input id="mrange" type="range" min="30" max="220" value="90" aria-label="Tempo">
+    <button type="button" class="step" id="mplus" aria-label="1 bpm sneller">+1</button>
+    <button type="button" class="step" id="mplus5" aria-label="5 bpm sneller">+5</button>
+  </div>
+  <div class="mrow wrap">
+    <label class="sel">Maat
+      <select id="mbeats"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select>
+    </label>
+    <button type="button" class="btn ghost" id="mtap">Tap tempo</button>
+  </div>
+  <div class="mrow wrap" id="mpresets"></div>
+  <button type="button" class="btn big" id="mgo">Start</button>
+</section>
 
-function list(){
-  const q = state.q.trim().toLowerCase();
-  const ps = DATA.pieces.filter(p=>p.group===state.group && (!q || p.title.toLowerCase().includes(q)));
-  if(!ps.length) return `<p class="empty">Geen stukken gevonden${q?` voor “${esc(state.q)}”`:''}.</p>`;
-  return `<div class="grid">` + ps.map(p=>{
-    const mine = state.my!=='alles' && p.parts.some(x=>x.cat===state.my);
-    const tags = [];
-    if(mine) tags.push(`<span class="tag me">Jouw partij</span>`);
-    if(p.videos) tags.push(`<span class="tag">Video</span>`);
-    if(p.audio.length) tags.push(`<span class="tag">Audio</span>`);
-    return `<a class="card" href="#${p.id}" data-id="${p.id}"><h2>${esc(p.title)}</h2>
-      <p class="sub">${p.parts.length? p.parts.length+' partijen' : 'Alleen partituur'}${p.note?' · '+esc(p.note):''}</p>
-      <div class="tags">${tags.join('')}</div></a>`;
-  }).join('') + `</div>`;
-}
-
-function oefen(){
-  const ds = DATA.oefenen[state.group] || [];
-  return `<div class="docs">` + ds.map(d=>`<a class="doc" href="${enc(d.file)}" target="_blank" rel="noopener"><b>${esc(d.label)}</b><span>${esc(d.desc||'PDF openen')}</span></a>`).join('') + `</div>`;
-}
-
-function detail(p){
-  const sorted = [...p.parts].sort((a,b)=> (b.cat===state.my)-(a.cat===state.my));
-  let h = `<button type="button" class="back" id="back">← Alle stukken</button>
-   <div class="pt"><h2>${esc(p.title)}</h2>${p.note?`<span class="note">${esc(p.note)}</span>`:''}</div>`;
-  if(p.score) h += `<p style="margin-top:14px"><a class="btn" href="${enc(p.score.file)}" target="_blank" rel="noopener">${esc(p.score.label)} openen</a></p>`;
-  if(p.videos) h += videoSection(p);
-  if(p.audio.length) h += `<section class="sec"><h3>Luisteren</h3>` + p.audio.map(a=>`<audio controls preload="none" src="${enc(a.file)}"></audio>`).join('') + `</section>`;
-  if(sorted.length) h += `<section class="sec"><h3>Partijen</h3><div class="parts">` + sorted.map(x=>{
-    const m = x.cat===state.my;
-    return `<a class="part${m?' mine':''}" href="${enc(x.file)}" target="_blank" rel="noopener"><span>${esc(x.instrument)}</span><small>${m?'Jouw partij':'PDF'}</small></a>`;
-  }).join('') + `</div></section>`;
-  if(p.images.length) h += `<section class="sec"><h3>Extra</h3><div class="parts">` + p.images.map(i=>`<a class="part" href="${enc(i.file)}" target="_blank" rel="noopener"><span>${esc(i.label)}</span><small>Afbeelding</small></a>`).join('') + `</div></section>`;
-  return h;
-}
-
-function videoSection(p){
-  const ins = p.videos.instruments;
-  const cur = ins[state.vi] || ins[0];
-  const L = cur.letters.find(l=>l.letter===state.letter) || cur.letters[0];
-  const hasTempo = t => L.video[t];
-  if(!hasTempo(state.tempo)) state.tempo = L.video.snel ? 'snel' : 'traag';
-  const src = L.video[state.tempo];
-  return `<section class="sec"><h3>Videolessen</h3><div class="lesson">
-    <div class="ctl">
-      <div class="seg" role="group" aria-label="Instrument">${ins.map((x,i)=>`<button type="button" data-vi="${i}" aria-pressed="${i===state.vi}">${esc(x.instrument)}</button>`).join('')}</div>
-      <div class="seg" role="group" aria-label="Tempo">
-        <button type="button" data-tempo="traag" aria-pressed="${state.tempo==='traag'}" ${L.video.traag?'':'disabled'}>Traag · 65 bpm</button>
-        <button type="button" data-tempo="snel" aria-pressed="${state.tempo==='snel'}" ${L.video.snel?'':'disabled'}>Snel · 110 bpm</button>
-      </div>
-    </div>
-    <div class="letters" role="group" aria-label="Letter in de partituur">${cur.letters.map(l=>`<button type="button" class="rm" data-letter="${l.letter}" aria-pressed="${l.letter===L.letter}" aria-label="${l.letter==='intro'?'Intro':'Letter '+l.letter}">${l.letter==='intro'?'Intro':l.letter}</button>`).join('')}</div>
-    <div class="ctl" style="margin:14px 0">
-      <label class="chk"><input type="checkbox" id="loop" ${state.loop?'checked':''}> Herhalen</label>
-      <label class="chk">Snelheid <select id="rate"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1">1×</option></select></label>
-    </div>
-    <div class="stage">
-      <div><p class="cap">Voordoen · ${esc(cur.instrument)} · ${L.letter==='intro'?'intro':'letter '+L.letter}</p>
-        <video id="vid" controls playsinline preload="metadata" src="${enc(src)}"></video></div>
-    </div></div></section>`;
-}
-
-function bindDetail(){
-  $('#back').onclick = ()=>{ location.hash=''; open(null) };
-  const v = $('#vid');
-  if(v){ v.loop = state.loop; v.playbackRate = state.rate; $('#rate').value = String(state.rate);
-    v.addEventListener('loadedmetadata',()=>{v.playbackRate = state.rate});
-    $('#loop').onchange = e=>{state.loop = e.target.checked; v.loop = state.loop};
-    $('#rate').onchange = e=>{state.rate = parseFloat(e.target.value); v.playbackRate = state.rate};
-  }
-  document.querySelectorAll('[data-vi]').forEach(b=>b.onclick=()=>{state.vi=+b.dataset.vi; render()});
-  document.querySelectorAll('[data-tempo]').forEach(b=>b.onclick=()=>{state.tempo=b.dataset.tempo; render()});
-  document.querySelectorAll('[data-letter]').forEach(b=>b.onclick=()=>{state.letter=b.dataset.letter; render()});
-}
-
-function open(id){
-  const p = id ? DATA.pieces.find(x=>x.id===id) : null;
-  state.piece = p || null;
-  if(p){ state.group = p.group; state.vi = 0; state.letter='intro'; }
-  render(); if(p) window.scrollTo(0,0);
-}
-
-// opzet
-const sel = $('#myinstr');
-sel.innerHTML = Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
-sel.value = state.my in CATS ? state.my : 'alles';
-sel.onchange = ()=>{state.my = sel.value; store.set('my', state.my); render()};
-document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{state.group=b.dataset.g; store.set('group',state.group); state.piece=null; location.hash=''; render()});
-document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.t; render()});
-$('#q').oninput = e=>{state.q = e.target.value; render()};
-$('#main').addEventListener('click', e=>{ const a = e.target.closest('a.card'); if(a){ e.preventDefault(); location.hash = a.dataset.id; open(a.dataset.id); }});
-window.addEventListener('hashchange', ()=>open(location.hash.slice(1) || null));
-open(location.hash.slice(1) || null);
-</script>
+<script src="vendor/pdf.min.js"></script>
+<script src="data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
