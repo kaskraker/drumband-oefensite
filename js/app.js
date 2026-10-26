@@ -82,6 +82,7 @@ function choosePage(p){
 function instrumentPage(p, part, single){
   var h = '<a class="back" href="#'+(single?'':p.id)+'">← '+(single?'Terug':esc(p.title))+'</a>'+
     '<div class="piece-head"><h1>'+esc(p.title)+'</h1>'+(single?'':'<p class="inst">'+esc(part.name)+'</p>')+'</div>';
+  if(part.audio) h += audioSection(p, part);
   if(part.videos) h += videoSection(part);
   h += '<section class="sec"><div class="sechead"><h2>Partituur</h2>'+
     '<a class="btn" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf">'+ICON_DL_S+'<span>Download</span></a></div>'+
@@ -92,6 +93,19 @@ function instrumentPage(p, part, single){
 /* bij 0.5x/0.75x de versie met 60 beelden per seconde (vloeiender), als die bestaat */
 function slowSrc(src){return video.rate<1 && HAS60 ? src.replace(/\.mp4$/,'-60.mp4') : src}
 var HAS60 = true;
+var aud = {tempo:'snel', all:false};
+function audioSection(p, part){
+  var ab = p.audioBpm || {traag:'traag', snel:'snel'};
+  return '<section class="sec"><h2>Luister mee</h2><div class="lesson">'+
+    '<div class="ctl"><div class="seg" role="group" aria-label="Tempo">'+
+      '<button type="button" data-atempo="traag" aria-pressed="'+(aud.tempo==='traag')+'">Traag '+ab.traag+'</button>'+
+      '<button type="button" data-atempo="snel" aria-pressed="'+(aud.tempo==='snel')+'">Snel '+ab.snel+'</button></div>'+
+      (p.audioAll?'<div class="seg" role="group" aria-label="Welke partijen">'+
+        '<button type="button" data-aall="0" aria-pressed="'+(!aud.all)+'">Alleen '+esc(part.name)+'</button>'+
+        '<button type="button" data-aall="1" aria-pressed="'+aud.all+'">Alles samen</button></div>':'')+
+    '</div><audio id="aud" class="aud" controls preload="metadata" src="'+enc(audioSrc(p, part))+'"></audio></div></section>';
+}
+function audioSrc(p, part){ return (aud.all && p.audioAll ? p.audioAll : part.audio)[aud.tempo] }
 function videoSection(part){
   var letters = part.videos.letters;
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
@@ -127,6 +141,12 @@ function draw(){
       var base = v.getAttribute('src').replace('-60.mp4','.mp4'), want = slowSrc(decodeURI(base)), cur = decodeURI(v.getAttribute('src'));
       if(want !== cur){ var t=v.currentTime, was=!v.paused; v.src=enc(want); v.addEventListener('loadedmetadata', function f(){v.removeEventListener('loadedmetadata',f); v.currentTime=t; v.playbackRate=video.rate; if(was) v.play()}); }
       v.playbackRate = video.rate; };
+  }
+  var au = $('#aud');
+  if(au && c.part){
+    var setAud = function(){ var was = !au.paused, t = au.currentTime; au.src = enc(audioSrc(c.piece, c.part)); au.addEventListener('loadedmetadata', function f(){ au.removeEventListener('loadedmetadata', f); try{au.currentTime = t}catch(e){} if(was) au.play() }); };
+    each('[data-atempo]', function(b){b.onclick=function(){aud.tempo=b.dataset.atempo; each('[data-atempo]', function(x){x.setAttribute('aria-pressed', String(x===b))}); setAud()}});
+    each('[data-aall]', function(b){b.onclick=function(){aud.all=b.dataset.aall==='1'; each('[data-aall]', function(x){x.setAttribute('aria-pressed', String(x===b))}); setAud()}});
   }
   each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});

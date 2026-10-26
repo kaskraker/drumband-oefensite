@@ -310,3 +310,6 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
   .mx-dots i{width:28px;height:28px;font-size:.85rem}
 }
 
+
+.aud{display:block;width:100%;max-width:520px;margin-top:6px}
+.lesson .ctl{display:flex;flex-wrap:wrap;gap:12px}
