@@ -255,3 +255,12 @@ svg .t.red{fill:var(--red)}
 .vpresets{display:inline-flex;gap:8px;flex-wrap:wrap}
 @media (max-width:420px){.vdots{display:none}}
 @media (max-height:720px){.vmini.inline.stuck{position:static}}
+
+/* metronoom als witte strook bovenaan de partituur */
+.vmini.inline{background:#fff;border:0;border-bottom:2px solid var(--line);border-radius:0;margin:0;box-shadow:0 1px 6px rgba(28,18,20,.25);padding:12px 14px}
+.vmini.inline.stuck{box-shadow:0 3px 8px rgba(28,18,20,.2)}
+.scorewrap .inline-pdf{gap:0}
+.scorewrap .inline-pdf .vpage + .vpage{margin-top:14px}
+.vslot{padding-bottom:0}
+.vslot + .vpages{padding-top:0}
+.vslot .vmini.inline{margin:0 auto}
