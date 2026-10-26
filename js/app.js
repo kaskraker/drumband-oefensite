@@ -84,9 +84,10 @@ function instrumentPage(p, part, single){
     '<div class="piece-head"><h1>'+esc(p.title)+'</h1>'+(single?'':'<p class="inst">'+esc(part.name)+'</p>')+'</div>';
   if(part.audio) h += audioSection(p, part);
   if(part.videos) h += videoSection(part);
-  h += '<section class="sec"><div class="sechead"><h2>Partituur</h2>'+
-    '<a class="btn" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf">'+ICON_DL_S+'<span>Download</span></a></div>'+
-    '<div class="scorewrap"><div id="mini-slot"></div><div id="inline-pdf" class="inline-pdf"></div></div></section>';
+  h += '<section class="sec"><h2>Partituur</h2>'+
+    '<div class="scorewrap"><div id="mini-slot"></div><div class="scorebody">'+
+    '<a class="dlfab" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf" title="PDF downloaden" aria-label="Partituur downloaden als PDF">'+ICON_DL_S+'<span>PDF</span></a>'+
+    '<div id="inline-pdf" class="inline-pdf"></div></div></div></section>';
   return h;
 }
 
