@@ -23,8 +23,8 @@ function ctx(){
 function loadSamples(){
   if(shared.loading) return shared.loading;
   shared.loading = Promise.all([
-    fetch('audio/drums.json').then(function(r){return r.json()}),
-    fetch('audio/drums.wav').then(function(r){return r.arrayBuffer()})
+    fetch('audio/drums.json?v=2').then(function(r){return r.json()}),
+    fetch('audio/drums.wav?v=2').then(function(r){return r.arrayBuffer()})
   ]).then(function(res){
     shared.map = res[0];
     return new Promise(function(ok, bad){ ctx().decodeAudioData(res[1], ok, bad) });
@@ -235,16 +235,16 @@ Player.prototype.tick = function(t, accent){
 };
 Player.prototype.note = function(voice, n, t, mine){
   var v = n[1], rr = (this.rr = (this.rr + 1) % 2), name;
-  var vol = (.18 + .82 * v * v) * (mine ? 1 : .85);
+  var vol = (.45 + .55 * v) * (mine ? 1 : .85);       // de lagen zelf dragen al de natuurlijke dynamiek
   t += (Math.random() - .5) * .006;                     // klein beetje menselijk
   vol *= .94 + Math.random() * .12;
   if(voice === 'snare'){
     if(n[2] === 'r'){ name = 'rim'; vol *= 1.1 }
-    else name = v < .5 ? (rr ? 'snare1a' : 'snare1b') : v < .78 ? 'snare2a' : (rr ? 'snare3a' : 'snare3b');
+    else name = v < .6 ? 'snare2a' : (rr ? 'snare3a' : 'snare3b');
   } else if(voice === 'tenor'){
-    name = v < .55 ? 'tenor1a' : (rr ? 'tenor2a' : 'tenor2b'); vol *= 1.35;
+    name = v < .6 ? 'tenor1a' : (rr ? 'tenor2a' : 'tenor2b'); vol *= 1.3;
   } else {
-    name = v < .4 ? 'bass1a' : v < .7 ? 'bass2a' : 'bass3a'; vol *= 1.7;
+    name = v < .5 ? 'bass1a' : v < .78 ? 'bass2a' : 'bass3a'; vol *= 1.6;
   }
   this.hit(name, t, vol * .8);
 };
