@@ -332,22 +332,6 @@ window.DATA = {
    ]
   },
   {
-   "title": "Vier eenvoudige ritme-oefeningen",
-   "file": "files/oefenen/4-simple-rhythm-exercises.pdf",
-   "group": "Ritme-oefeningen",
-   "levels": [
-    "starter"
-   ]
-  },
-  {
-   "title": "Rhythm book for warm-ups",
-   "file": "files/oefenen/rhythm-book-for-warmups.pdf",
-   "group": "Ritme-oefeningen",
-   "levels": [
-    "starter"
-   ]
-  },
-  {
    "title": "Rhythm practice sheet (beginners)",
    "file": "files/oefenen/rhythm-practice-sheet-beginning.pdf",
    "group": "Ritme-oefeningen",
@@ -366,14 +350,6 @@ window.DATA = {
   {
    "title": "Cursus trommelen",
    "file": "files/oefenen/cursus-trommelen.pdf",
-   "group": "Ritme-oefeningen",
-   "levels": [
-    "starter"
-   ]
-  },
-  {
-   "title": "Free Drum Book",
-   "file": "files/oefenen/free-drum-book.pdf",
    "group": "Ritme-oefeningen",
    "levels": [
     "starter"
