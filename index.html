@@ -48,12 +48,24 @@
   <div id="vpages" class="vpages"></div>
 </div>
 
-<div id="vmini" class="vmini fixedbar" hidden role="group" aria-label="Metronoom">
-    <button type="button" id="vm-go" class="vgo">Start</button>
-    <button type="button" id="vm-minus" class="vstep" aria-label="Trager">−</button>
-    <button type="button" id="vm-bpm" class="vbpm" aria-label="Metronoom instellingen"><b>90</b> <small>bpm</small></button>
-    <button type="button" id="vm-plus" class="vstep" aria-label="Sneller">+</button>
-    <div class="vdots" id="vm-dots" aria-hidden="true"></div>
+<div id="vmini" class="vmini inline" hidden role="group" aria-label="Metronoom">
+    <div class="vrow">
+      <button type="button" id="vm-go" class="vgo">Start</button>
+      <button type="button" id="vm-minus" class="vstep" aria-label="Trager">−</button>
+      <button type="button" id="vm-bpm" class="vbpm" aria-label="Metronoom instellingen"><b>90</b> <small>bpm</small></button>
+      <button type="button" id="vm-plus" class="vstep" aria-label="Sneller">+</button>
+      <div class="vdots" id="vm-dots" aria-hidden="true"></div>
+    </div>
+    <div class="vrow">
+      <button type="button" class="vstep sm" id="vm-m5" aria-label="5 bpm trager">−5</button>
+      <input id="vm-range" class="vrange" type="range" min="30" max="220" value="90" aria-label="Tempo">
+      <button type="button" class="vstep sm" id="vm-p5" aria-label="5 bpm sneller">+5</button>
+    </div>
+    <div class="vrow wrap">
+      <select id="vm-beats" class="vsel" aria-label="Maat"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select>
+      <button type="button" class="chip" id="vm-tap">Tap tempo</button>
+      <span id="vm-presets" class="vpresets"></span>
+    </div>
   </div>
 
 <!-- Metronoom -->

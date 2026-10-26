@@ -241,7 +241,7 @@ function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
   M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
-  $('#vm-bpm b').textContent = M.bpm;
+  $('#vm-bpm b').textContent = M.bpm; $('#vm-range').value = M.bpm;
 }
 var DOTS = ['#dots','#vm-dots'];
 function buildDots(){
@@ -307,20 +307,27 @@ hold($('#mminus'),-1); hold($('#mplus'),1); hold($('#vm-minus'),-1); hold($('#vm
 $('#mminus5').onclick = function(){setBpm(M.bpm-5)};
 $('#mplus5').onclick = function(){setBpm(M.bpm+5)};
 $('#mrange').oninput = function(e){setBpm(+e.target.value)};
-$('#mbeats').onchange = function(e){M.beats = +e.target.value; M.beat=0; buildDots()};
+$('#vm-range').oninput = function(e){setBpm(+e.target.value)};
+$('#vm-m5').onclick = function(){setBpm(M.bpm-5)}; $('#vm-p5').onclick = function(){setBpm(M.bpm+5)};
+function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); $('#vm-beats').value=String(n); buildDots()}
+$('#mbeats').onchange = function(e){setBeats(+e.target.value)};
+$('#vm-beats').onchange = function(e){setBeats(+e.target.value)};
 var taps = [];
-$('#mtap').onclick = function(){
+$('#mtap').onclick = $('#vm-tap').onclick = function(){
   var n = performance.now();
   if(taps.length && n - taps[taps.length-1] > 2000) taps = [];
   taps.push(n); if(taps.length>5) taps.shift();
   if(taps.length>=2){ setBpm(60000 / ((taps[taps.length-1]-taps[0])/(taps.length-1))) }
 };
 function updatePresets(){
-  var box = $('#mpresets'), p = current.piece;
-  if(p && p.bpm && p.bpm.length){
-    box.innerHTML = p.bpm.map(function(b){return '<button type="button" class="chip" data-bpm="'+b+'">'+b+' bpm</button>'}).join('');
-    each('#mpresets [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
-  } else box.innerHTML = '';
+  var p = current.piece;
+  ['#mpresets','#vm-presets'].forEach(function(s){
+    var box = $(s);
+    if(p && p.bpm && p.bpm.length){
+      box.innerHTML = p.bpm.map(function(b){return '<button type="button" class="chip" data-bpm="'+b+'">'+b+' bpm</button>'}).join('');
+      each(s+' [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
+    } else box.innerHTML = '';
+  });
 }
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState==='visible' && M.running && navigator.wakeLock){ navigator.wakeLock.request('screen').then(function(w){M.wake=w}).catch(function(){}) }
