@@ -359,3 +359,8 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 @media (max-width:520px){.pl-lbl{flex-basis:100%}.pl-sep{display:none}}
 
 .seg.wrap{flex-wrap:wrap;border:0;gap:8px;overflow:visible}.seg.wrap button{border:2px solid var(--red);border-radius:23px;min-width:54px}.seg.wrap button+button{border-left:2px solid var(--red)}
+
+.lesson .ctl{align-items:center}
+.alt{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.alt select{min-height:46px;padding:0 12px;border:2px solid var(--line);border-radius:4px;background:var(--paper);font:600 1rem var(--body);color:var(--ink)}
+.alt.on select{border-color:var(--red);background:var(--red);color:var(--bone)}

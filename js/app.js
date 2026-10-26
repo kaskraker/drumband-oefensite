@@ -13,7 +13,7 @@ var ICON_DL_S = ICON_DL.replace(/width="22" height="22"/,'width="18" height="18"
 var level = store.get('level','gevorderd'); if(level!=='starter' && level!=='gevorderd') level='gevorderd';
 var inLevel = function(x){return x.levels.indexOf(level)>-1};
 var partsOf = function(p){return p.parts.filter(function(x){return !x.levels || inLevel(x)})};
-var video = {tempo:'snel', letter:'intro', rate:1, loop:true};
+var video = {bpm:110, letter:'intro', loop:true};
 var current = {piece:null, part:null, single:false, basics:false, view:''};
 var inlineMount = null;
 
@@ -92,29 +92,31 @@ function instrumentPage(p, part, single){
 }
 
 /* bij 0.5x/0.75x de versie met 60 beelden per seconde (vloeiender), als die bestaat */
-var SLOW = {'0.5':{s:'-x50',f:2},'0.75':{s:'-x75',f:4/3},'1':{s:'',f:1}};
-function slowSrc(src){return src.replace(/\.mp4$/, SLOW[String(video.rate)].s+'.mp4')}
+/* alle tempo's: 65 en 110 zijn de opnames zelf; de rest is daarvan afgeleid (vertraagd of versneld) */
+var TEMPOS = {33:{t:'traag',s:'-x50'}, 49:{t:'traag',s:'-x75'}, 65:{t:'traag',s:''}, 83:{t:'traag',s:'-b83'}, 110:{t:'snel',s:''}};
+function videoUrl(L, bpm){
+  var d = TEMPOS[bpm]; return L.video[d.t].replace(/\.mp4$/, d.s+'.mp4');
+}
 function hasPlayer(p, part){ return !!(p.score && part.voice && window.Player) }
 var player = null;
 function videoSection(part){
   var letters = part.videos.letters;
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
-  video.letter = L.letter;
-  if(!L.video[video.tempo]) video.tempo = L.video.snel ? 'snel' : 'traag';
-  /* hoofdkeuze: Traag 65 / Snel 110. Daaronder een menu voor tussentempo's (trager afspelen) */
-  var BASE = {traag:65, snel:110};
-  var rs = (video.tempo==='snel' && L.video.traag) ? [1,0.75] : [1,0.75,0.5];
-  if(rs.indexOf(video.rate)<0) video.rate = 1;
-  var src = L.video[video.tempo];
+  video.letter = L.letter; video.cur = L;
+  var has = function(bpm){ return !!L.video[TEMPOS[bpm].t] };
+  if(!TEMPOS[video.bpm] || !has(video.bpm)) video.bpm = has(110) ? 110 : 65;
+  var extra = [33,49,83].filter(has), isMain = (video.bpm===65 || video.bpm===110);
+  var src = videoUrl(L, video.bpm);
   return '<section class="sec"><h2>Oefenvideo</h2><div class="lesson">'+
    '<div class="ctl"><div class="seg" role="group" aria-label="Tempo">'+
-      '<button type="button" data-tempo="traag" aria-pressed="'+(video.tempo==='traag')+'"'+(L.video.traag?'':' disabled')+'>Traag 65</button>'+
-      '<button type="button" data-tempo="snel" aria-pressed="'+(video.tempo==='snel')+'"'+(L.video.snel?'':' disabled')+'>Snel 110</button></div></div>'+
+      '<button type="button" data-bpm-main="65" aria-pressed="'+(video.bpm===65)+'"'+(has(65)?'':' disabled')+'>Traag 65</button>'+
+      '<button type="button" data-bpm-main="110" aria-pressed="'+(video.bpm===110)+'"'+(has(110)?'':' disabled')+'>Snel 110</button></div>'+
+      (extra.length?'<label class="alt'+(isMain?'':' on')+'">Ander tempo <select id="alt"><option value=""'+(isMain?' selected':'')+'>kies…</option>'+extra.map(function(n){return '<option value="'+n+'"'+(video.bpm===n?' selected':'')+'>'+n+' bpm</option>'}).join('')+'</select></label>':'')+'</div>'+
    '<div class="letters" role="group" aria-label="Letter">'+letters.map(function(l){
       return '<button type="button" class="rm" data-letter="'+l.letter+'" aria-pressed="'+(l.letter===L.letter)+'">'+(l.letter==='intro'?'Intro':l.letter)+'</button>'}).join('')+'</div>'+
    '<div class="opts"><label class="chk"><input type="checkbox" id="loop"'+(video.loop?' checked':'')+'> Herhalen</label>'+
-     '<label class="chk">Nog trager <select id="rate">'+rs.map(function(r){var n=Math.round(BASE[video.tempo]*r);return '<option value="'+r+'">'+(r===1?'Gewoon ('+n+' bpm)':n+' bpm')+'</option>'}).join('')+'</select></label></div>'+
-   '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(slowSrc(src))+'"></video></div></div></section>';
+     '</div>'+
+   '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(src)+'"></video></div></div></section>';
 }
 
 function draw(){
@@ -127,16 +129,20 @@ function draw(){
   if(c.basics) wireBasics();
   var v = $('#vid');
   if(v){
-    v.loop = video.loop; $('#rate').value = String(video.rate);
+    v.loop = video.loop;
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
-    $('#rate').onchange = function(e){
-      var old = SLOW[String(video.rate)], nw = SLOW[e.target.value], tt = v.currentTime / old.f * nw.f, was = !v.paused;
-      video.rate = parseFloat(e.target.value);
-      v.src = enc(slowSrc(decodeURI(v.getAttribute('src')).replace(/-x(50|75)\.mp4$/, '.mp4')));
-      v.addEventListener('loadedmetadata', function f(){ v.removeEventListener('loadedmetadata', f); try{v.currentTime = tt}catch(err){} if(was) v.play(); });
-    };
   }
-  each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; video.rate=1; draw()}});
+  function setBpmVideo(n){
+    if(!v){ video.bpm = n; return draw() }
+    var frac = v.duration ? v.currentTime / v.duration : 0, was = !v.paused;
+    video.bpm = n;
+    var L = video.cur; v.src = enc(videoUrl(L, n));
+    v.addEventListener('loadedmetadata', function f(){ v.removeEventListener('loadedmetadata', f); try{v.currentTime = frac * v.duration}catch(err){} if(was) v.play(); });
+    each('[data-bpm-main]', function(x){x.setAttribute('aria-pressed', String(+x.dataset.bpmMain===n))});
+    var alt = $('#alt'); if(alt){ alt.value = (n===65||n===110) ? '' : String(n); alt.parentNode.classList.toggle('on', !(n===65||n===110)) }
+  }
+  each('[data-bpm-main]', function(b){b.onclick=function(){setBpmVideo(+b.dataset.bpmMain)}});
+  if($('#alt')) $('#alt').onchange = function(e){ if(e.target.value) setBpmVideo(+e.target.value) };
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});
   if(c.part && hasPlayer(c.piece, c.part)){
     player = new Player({id:c.piece.id, score:c.piece.score, voice:c.part.voice, partName:c.part.name, pdf:c.part.file, goal:c.piece.bpm, bar:$('#pl-bar'), set:$('#pl-set')});
