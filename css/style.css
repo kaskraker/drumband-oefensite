@@ -357,3 +357,5 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .pl-lbl{font-size:.9rem;font-weight:600;color:var(--muted);margin-right:2px}
 .pl-sep{width:1px;align-self:stretch;background:var(--line);margin:4px 4px}
 @media (max-width:520px){.pl-lbl{flex-basis:100%}.pl-sep{display:none}}
+
+.seg.wrap{flex-wrap:wrap;border:0;gap:8px;overflow:visible}.seg.wrap button{border:2px solid var(--red);border-radius:23px;min-width:54px}.seg.wrap button+button{border-left:2px solid var(--red)}
