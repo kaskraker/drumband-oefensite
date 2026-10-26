@@ -50,37 +50,7 @@ function home(){
 
 /* ---------- de basics (starters) ---------- */
 function basicsPage(){
-  var li = function(a){return a.map(function(t){return '<li>'+t+'</li>'}).join('')};
-  return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>De basics</h1></div>'+
-  '<div class="basics">'+
-  '<p class="lead">Drie dingen op een rij: hoe je achter de trommel staat, hoe je de stokken vasthoudt en hoe je op de trommel slaat.</p>'+
-  '<section class="sec"><h2>1. Hoe sta of zit je?</h2><ul>'+li([
-    'Sta rechtop met je voeten ongeveer op schouderbreedte. Laat je schouders zakken en je armen ontspannen hangen.',
-    'De trommel staat of hangt ongeveer op taillehoogte, een beetje gekanteld naar je toe. Je hoeft je armen niet op te tillen of te laten zakken om erbij te kunnen.',
-    'Zit je? Zet je stoel zo dat je heupen net boven je knieën zitten. Zit rechtop, niet helemaal vooraan op de stoel, en zet de trommel recht voor je.',
-    'Heb je een draagriem? Vraag aan een begeleider om hem voor je af te stellen.'])+'</ul></section>'+
-  '<section class="sec"><h2>2. Hoe houd je de stokken vast?</h2><ul>'+li([
-    'Pak de stok op ongeveer een derde vanaf het dikke uiteinde. Daar is hij in balans en voel je dat hij makkelijk beweegt.',
-    'Leg je duim tegen de stok, in de eerste plooi van je wijsvinger. Dat is het draaipunt van de stok.',
-    'Laat je andere vingers losjes rond de stok krullen. Ze houden hem bij, ze knijpen niet.',
-    'Draai je handen zodat de rug van je hand naar boven wijst. De knokkel van je wijsvinger is het hoogste punt.',
-    'Beide handen houden de stok op dezelfde manier vast.',
-    'Knijp niet te hard. De stok moet kunnen draaien en terugspringen. Een stijve greep is slecht voor je polsen en je handen.'])+'</ul></section>'+
-  '<section class="sec"><h2>3. Hoe sla je op de trommel?</h2><ul>'+li([
-    'Begin met de stokken schuin omhoog, ongeveer 10 tot 15 cm uit elkaar en met je ellebogen dicht bij je lichaam.',
-    'Raak het midden van het vel, elke keer op dezelfde plek.',
-    'Beweeg de stok recht naar beneden en recht omhoog, niet schuin.',
-    'Laat de stok vallen en laat hem vrij terugkaatsen. Druk hem niet in het vel.',
-    'Zachter spelen doe je met een lagere, kleinere beweging. Luider spelen doe je met een hogere beweging.'])+'</ul>'+
-   '<h3>De vier slagen</h3><dl class="strokes">'+
-    '<dt>Volle slag</dt><dd>Je start hoog, slaat, en de stok kaatst terug naar boven.</dd>'+
-    '<dt>Neerslag</dt><dd>Je start hoog, slaat, en houdt de stok net boven het vel. Handig als het na een luide noot meteen zacht moet.</dd>'+
-    '<dt>Opslag</dt><dd>Je start laag, slaat, en brengt de stok daarna naar boven. Handig voor een luide noot na een zachte.</dd>'+
-    '<dt>Tikslag</dt><dd>Een kleine slag die laag begint en laag terugkomt. Voor veel zachte noten na elkaar.</dd></dl></section>'+
-  '<section class="sec"><h2>4. Probeer het meteen</h2><p>Speel 8 slagen met rechts en 8 met links, rustig en even luid. Luister of elke slag hetzelfde klinkt. Zet de metronoom aan en begin traag.</p>'+
-   '<div class="mrow wrap"><button type="button" class="chip" data-metro="60">Metronoom op 60</button><button type="button" class="chip" data-metro="80">Metronoom op 80</button></div></section>'+
-  '<p class="src">Gebaseerd op uitleg van <a href="https://percussion.org/basic-snare-drum-technique/" target="_blank" rel="noopener">Percussive Arts Society</a>, <a href="https://www.thomann.de/be/onlineexpert_page_snare_drums_rudiments_and_basic_strokes.html" target="_blank" rel="noopener">Thomann</a>, <a href="https://drumstars.co.uk/how-to-hold-your-drumsticks-matched-trad-grip" target="_blank" rel="noopener">Drumstars</a> en <a href="https://www.musicindustryhowto.com/set-up-drum-throne-drums/" target="_blank" rel="noopener">Music Industry How-To</a> (Engelstalig). Vraag bij twijfel altijd aan een begeleider.</p>'+
-  '</div>';
+  return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>De basics</h1></div>'+window.BASICS_HTML;
 }
 
 /* stap 1: instrument kiezen */
