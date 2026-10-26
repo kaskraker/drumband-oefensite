@@ -26,8 +26,8 @@ h1,h2,h3{font-family:var(--body);font-weight:700;line-height:1.15;margin:0;text-
 .top{background:var(--red);color:var(--bone);padding-top:env(safe-area-inset-top,0px)}
 .top .inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
 .brand img{display:block;height:78px;width:auto}
-.site-name{font-family:var(--body);font-weight:700;font-size:1.3rem;margin:0 auto 0 8px;padding:8px 20px;background:var(--bone);color:var(--red);border-radius:4px}
-@media (max-width:640px){.site-name{display:none}.top .inner{justify-content:space-between}}
+.site-name{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1;letter-spacing:-.04em;text-transform:uppercase;margin:0 auto 0 6px;padding:2px 0 2px 22px;border-left:2px solid rgba(245,241,234,.55);background:none;color:var(--bone)}
+@media (max-width:640px){.site-name{font-size:1.25rem;padding-left:14px;margin-right:auto}.top .inner{justify-content:space-between}}
 
 main{padding-block:32px 24px}
 section.block{margin-bottom:44px}
