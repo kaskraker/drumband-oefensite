@@ -100,8 +100,9 @@ function videoSection(part){
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
   video.letter = L.letter;
   if(!L.video[video.tempo]) video.tempo = L.video.snel ? 'snel' : 'traag';
-  var both = !!(L.video.traag && L.video.snel);
-  var rates = both ? [['0.75','0,75×'],['1','1×']] : [['0.5','0,5×'],['0.75','0,75×'],['1','1×']];
+  /* 0,5× alleen als dit niet al de snelle versie is van een stuk met ook een trage versie */
+  var halfOk = video.tempo === 'traag' || !L.video.traag;
+  var rates = halfOk ? [['0.5','0,5×'],['0.75','0,75×'],['1','1×']] : [['0.75','0,75×'],['1','1×']];
   if(!rates.some(function(r){return r[0]===String(video.rate)})) video.rate = 1;
   var src = L.video[video.tempo];
   return '<section class="sec"><h2>Oefenvideo</h2><div class="lesson">'+
