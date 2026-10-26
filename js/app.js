@@ -19,6 +19,8 @@ function pieceFiles(p){
 /* ---------- pagina's ---------- */
 var video = {vi:0, tempo:'snel', letter:'intro', rate:1, loop:true};
 var current = {piece:null};
+var level = store.get('level','gevorderd'); if(level!=='starter') level='gevorderd';
+var inLevel = function(x){return x.levels.indexOf(level)>-1};
 
 function dlLink(file, label){
   return '<a class="dl" href="'+enc(file)+'" download="'+esc(label)+'.pdf" aria-label="Download '+esc(label)+'">'+ICON_DL+'</a>';
@@ -27,14 +29,14 @@ function dlLink(file, label){
 function home(){
   var tiles = function(list, cls){return '<div class="tiles">'+list.map(function(p){
     return '<a class="tile '+cls+'" href="#'+p.id+'"><h3>'+esc(p.title)+'</h3></a>'}).join('')+'</div>'};
-  var now = DATA.pieces.filter(function(p){return p.status==='actueel'});
-  var cls = DATA.pieces.filter(function(p){return p.status==='classic'});
-  var arch = DATA.pieces.filter(function(p){return p.status==='archief'});
-  var h = '';
+  var now = DATA.pieces.filter(function(p){return p.status==='actueel' && inLevel(p)});
+  var cls = DATA.pieces.filter(function(p){return p.status==='classic' && inLevel(p)});
+  var arch = DATA.pieces.filter(function(p){return p.status==='archief' && inLevel(p)});
+  var h = '<div class="seg lvl" role="group" aria-label="Niveau"><button type="button" data-level="starter" aria-pressed="'+(level==='starter')+'">Starters</button><button type="button" data-level="gevorderd" aria-pressed="'+(level==='gevorderd')+'">Gevorderden</button></div>';
   if(now.length) h += '<section class="block"><h2>Nu aan de beurt</h2>'+tiles(now,'')+'</section>';
   if(cls.length) h += '<section class="block"><h2>Classics</h2>'+tiles(cls,'light')+'</section>';
   var groups = {}; var order=[];
-  DATA.oefeningen.forEach(function(d){ if(!groups[d.group]){groups[d.group]=[];order.push(d.group)} groups[d.group].push(d) });
+  DATA.oefeningen.filter(inLevel).forEach(function(d){ if(!groups[d.group]){groups[d.group]=[];order.push(d.group)} groups[d.group].push(d) });
   if(order.length){
     h += '<section class="block"><h2>Oefeningen</h2>';
     order.forEach(function(g){
@@ -87,6 +89,7 @@ function bindPage(){
     $('#loop').onchange = function(e){video.loop = e.target.checked; v.loop = video.loop};
     $('#rate').onchange = function(e){video.rate = parseFloat(e.target.value); v.playbackRate = video.rate};
   }
+  each('[data-level]', function(b){b.onclick=function(){level=b.dataset.level; store.set('level',level); draw()}});
   each('[data-vi]', function(b){b.onclick=function(){video.vi=+b.dataset.vi; draw()}});
   each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});

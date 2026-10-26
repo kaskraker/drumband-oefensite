@@ -11,6 +11,9 @@ window.DATA = {
      "name": "Walz Macabre",
      "file": "files/walz-macabre/walz-macabre.pdf"
     }
+   ],
+   "levels": [
+    "gevorderd"
    ]
   },
   {
@@ -178,7 +181,10 @@ window.DATA = {
       ]
      }
     ]
-   }
+   },
+   "levels": [
+    "gevorderd"
+   ]
   },
   {
    "id": "jungle-express",
@@ -222,6 +228,9 @@ window.DATA = {
    ],
    "bpm": [
     108
+   ],
+   "levels": [
+    "gevorderd"
    ]
   },
   {
@@ -251,6 +260,10 @@ window.DATA = {
      "name": "Tenor dubbel",
      "file": "files/marsvaardig-junior/tenor-dubbel.pdf"
     }
+   ],
+   "levels": [
+    "starter",
+    "gevorderd"
    ]
   },
   {
@@ -283,6 +296,9 @@ window.DATA = {
    ],
    "bpm": [
     112
+   ],
+   "levels": [
+    "gevorderd"
    ]
   }
  ],
@@ -290,42 +306,66 @@ window.DATA = {
   {
    "title": "Opwarming – Drum rudiments",
    "file": "files/oefenen/opwarming-drum-rudiments.pdf",
-   "group": "Rudiments en opwarming"
+   "group": "Rudiments en opwarming",
+   "levels": [
+    "gevorderd"
+   ]
   },
   {
    "title": "Pas-rudiments",
    "file": "files/oefenen/pas-rudiments.pdf",
-   "group": "Rudiments en opwarming"
+   "group": "Rudiments en opwarming",
+   "levels": [
+    "gevorderd"
+   ]
   },
   {
    "title": "Vier eenvoudige ritme-oefeningen",
    "file": "files/oefenen/4-simple-rhythm-exercises.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   },
   {
    "title": "Rhythm book for warm-ups",
    "file": "files/oefenen/rhythm-book-for-warmups.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   },
   {
    "title": "Rhythm practice sheet (beginners)",
    "file": "files/oefenen/rhythm-practice-sheet-beginning.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   },
   {
    "title": "Zestiende noten",
    "file": "files/oefenen/zestiende-noten.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   },
   {
    "title": "Cursus trommelen",
    "file": "files/oefenen/cursus-trommelen.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   },
   {
    "title": "Free Drum Book",
    "file": "files/oefenen/free-drum-book.pdf",
-   "group": "Ritme-oefeningen"
+   "group": "Ritme-oefeningen",
+   "levels": [
+    "starter"
+   ]
   }
  ]
 };

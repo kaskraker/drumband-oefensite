@@ -125,3 +125,6 @@ section.block>h2{font-size:1.6rem;color:var(--red);margin-bottom:16px}
 .foot{color:var(--muted);font-size:.95rem;padding-block:8px 0}
 body.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}
+
+.lvl{margin-bottom:30px}
+.lvl button{min-height:50px;padding:0 24px;font-size:1.05rem}
