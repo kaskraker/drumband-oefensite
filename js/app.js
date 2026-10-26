@@ -100,6 +100,9 @@ function videoSection(part){
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
   video.letter = L.letter;
   if(!L.video[video.tempo]) video.tempo = L.video.snel ? 'snel' : 'traag';
+  var both = !!(L.video.traag && L.video.snel);
+  var rates = both ? [['0.75','0,75×'],['1','1×']] : [['0.5','0,5×'],['0.75','0,75×'],['1','1×']];
+  if(!rates.some(function(r){return r[0]===String(video.rate)})) video.rate = 1;
   var src = L.video[video.tempo];
   return '<section class="sec"><h2>Oefenvideo</h2><div class="lesson">'+
    '<div class="ctl"><div class="seg" role="group" aria-label="Tempo">'+
@@ -108,7 +111,7 @@ function videoSection(part){
    '<div class="letters" role="group" aria-label="Letter">'+letters.map(function(l){
       return '<button type="button" class="rm" data-letter="'+l.letter+'" aria-pressed="'+(l.letter===L.letter)+'">'+(l.letter==='intro'?'Intro':l.letter)+'</button>'}).join('')+'</div>'+
    '<div class="opts"><label class="chk"><input type="checkbox" id="loop"'+(video.loop?' checked':'')+'> Herhalen</label>'+
-     '<label class="chk">Snelheid <select id="rate"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1">1×</option></select></label></div>'+
+     '<label class="chk">Snelheid <select id="rate">'+rates.map(function(r){return '<option value="'+r[0]+'">'+r[1]+'</option>'}).join('')+'</select></label></div>'+
    '<div class="stage"><video id="vid" controls playsinline preload="metadata" src="'+enc(slowSrc(src))+'"></video></div></div></section>';
 }
 
