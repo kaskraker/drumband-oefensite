@@ -238,18 +238,12 @@ window.DATA = {
      "levels": [
       "gevorderd"
      ],
-     "audio": {
-      "traag": "audio/marsvaardig-junior/bas-drum-traag.mp3",
-      "snel": "audio/marsvaardig-junior/bas-drum-snel.mp3"
-     }
+     "voice": "bas"
     },
     {
      "name": "Snare drum",
      "file": "files/marsvaardig-junior/snare-drum.pdf",
-     "audio": {
-      "traag": "audio/marsvaardig-junior/snare-drum-traag.mp3",
-      "snel": "audio/marsvaardig-junior/snare-drum-snel.mp3"
-     }
+     "voice": "snare"
     },
     {
      "name": "Snare dubbel",
@@ -257,10 +251,7 @@ window.DATA = {
      "levels": [
       "gevorderd"
      ],
-     "audio": {
-      "traag": "audio/marsvaardig-junior/snare-drum-traag.mp3",
-      "snel": "audio/marsvaardig-junior/snare-drum-snel.mp3"
-     }
+     "voice": "snare"
     },
     {
      "name": "Tenor",
@@ -268,10 +259,7 @@ window.DATA = {
      "levels": [
       "gevorderd"
      ],
-     "audio": {
-      "traag": "audio/marsvaardig-junior/tenor-traag.mp3",
-      "snel": "audio/marsvaardig-junior/tenor-snel.mp3"
-     }
+     "voice": "tenor"
     },
     {
      "name": "Tenor dubbel",
@@ -279,28 +267,18 @@ window.DATA = {
      "levels": [
       "gevorderd"
      ],
-     "audio": {
-      "traag": "audio/marsvaardig-junior/tenor-traag.mp3",
-      "snel": "audio/marsvaardig-junior/tenor-snel.mp3"
-     }
+     "voice": "tenor"
     }
    ],
    "levels": [
     "starter",
     "gevorderd"
    ],
-   "audioAll": {
-    "traag": "audio/marsvaardig-junior/samen-traag.mp3",
-    "snel": "audio/marsvaardig-junior/samen-snel.mp3"
-   },
-   "audioBpm": {
-    "traag": 80,
-    "snel": 110
-   },
    "bpm": [
     80,
     110
-   ]
+   ],
+   "score": "score/marsvaardig-junior.json"
   },
   {
    "id": "full-scope",

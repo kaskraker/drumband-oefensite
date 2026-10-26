@@ -82,10 +82,9 @@ function choosePage(p){
 function instrumentPage(p, part, single){
   var h = '<a class="back" href="#'+(single?'':p.id)+'">← '+(single?'Terug':esc(p.title))+'</a>'+
     '<div class="piece-head"><h1>'+esc(p.title)+'</h1>'+(single?'':'<p class="inst">'+esc(part.name)+'</p>')+'</div>';
-  if(part.audio) h += audioSection(p, part);
   if(part.videos) h += videoSection(part);
   h += '<section class="sec"><h2>Partituur</h2>'+
-    '<div class="scorewrap"><div id="mini-slot"></div><div class="scorebody">'+
+    '<div class="scorewrap">'+(hasPlayer(p, part)?'<div id="pl-bar" class="vmini inline stuck mx pl" role="group" aria-label="Afspelen"></div><div id="pl-set" class="pl-set mx pl"></div>':'<div id="mini-slot"></div>')+'<div class="scorebody">'+
     '<a class="dlfab" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf" title="PDF downloaden" aria-label="Partituur downloaden als PDF">'+ICON_DL_S+'<span>PDF</span></a>'+
     '<div id="inline-pdf" class="inline-pdf"></div></div></div></section>';
   return h;
@@ -94,19 +93,8 @@ function instrumentPage(p, part, single){
 /* bij 0.5x/0.75x de versie met 60 beelden per seconde (vloeiender), als die bestaat */
 var SLOW = {'0.5':{s:'-x50',f:2},'0.75':{s:'-x75',f:4/3},'1':{s:'',f:1}};
 function slowSrc(src){return src.replace(/\.mp4$/, SLOW[String(video.rate)].s+'.mp4')}
-var aud = {tempo:'snel', all:false};
-function audioSection(p, part){
-  var ab = p.audioBpm || {traag:'traag', snel:'snel'};
-  return '<section class="sec"><h2>Luister mee</h2><div class="lesson">'+
-    '<div class="ctl"><div class="seg" role="group" aria-label="Tempo">'+
-      '<button type="button" data-atempo="traag" aria-pressed="'+(aud.tempo==='traag')+'">Traag '+ab.traag+'</button>'+
-      '<button type="button" data-atempo="snel" aria-pressed="'+(aud.tempo==='snel')+'">Snel '+ab.snel+'</button></div>'+
-      (p.audioAll?'<div class="seg" role="group" aria-label="Welke partijen">'+
-        '<button type="button" data-aall="0" aria-pressed="'+(!aud.all)+'">Alleen '+esc(part.name)+'</button>'+
-        '<button type="button" data-aall="1" aria-pressed="'+aud.all+'">Alles samen</button></div>':'')+
-    '</div><audio id="aud" class="aud" controls preload="metadata" src="'+enc(audioSrc(p, part))+'"></audio></div></section>';
-}
-function audioSrc(p, part){ return (aud.all && p.audioAll ? p.audioAll : part.audio)[aud.tempo] }
+function hasPlayer(p, part){ return !!(p.score && part.voice && window.Player) }
+var player = null;
 function videoSection(part){
   var letters = part.videos.letters;
   var L = letters.filter(function(l){return l.letter===video.letter})[0] || letters[0];
@@ -126,6 +114,7 @@ function videoSection(part){
 
 function draw(){
   unmount(inlineMount); inlineMount = null;
+  if(player){ player.destroy(); player = null; }
   if(mini.parentNode !== document.body) document.body.appendChild(mini);
   var c = current;
   $('#main').innerHTML = c.basics ? basicsPage() : c.part ? instrumentPage(c.piece, c.part, c.single) : c.piece ? choosePage(c.piece) : home();
@@ -144,15 +133,12 @@ function draw(){
       v.addEventListener('loadedmetadata', function f(){ v.removeEventListener('loadedmetadata', f); try{v.currentTime = t}catch(err){} if(was) v.play(); });
     };
   }
-  var au = $('#aud');
-  if(au && c.part){
-    var setAud = function(){ var was = !au.paused, t = au.currentTime; au.src = enc(audioSrc(c.piece, c.part)); au.addEventListener('loadedmetadata', function f(){ au.removeEventListener('loadedmetadata', f); try{au.currentTime = t}catch(e){} if(was) au.play() }); };
-    each('[data-atempo]', function(b){b.onclick=function(){aud.tempo=b.dataset.atempo; each('[data-atempo]', function(x){x.setAttribute('aria-pressed', String(x===b))}); setAud()}});
-    each('[data-aall]', function(b){b.onclick=function(){aud.all=b.dataset.aall==='1'; each('[data-aall]', function(x){x.setAttribute('aria-pressed', String(x===b))}); setAud()}});
-  }
   each('[data-tempo]', function(b){b.onclick=function(){video.tempo=b.dataset.tempo; draw()}});
   each('[data-letter]', function(b){b.onclick=function(){video.letter=b.dataset.letter; draw()}});
-  if(c.part) inlineMount = mountPdf($('#inline-pdf'), c.part.file, null);
+  if(c.part && hasPlayer(c.piece, c.part)){
+    player = new Player({id:c.piece.id, score:c.piece.score, voice:c.part.voice, partName:c.part.name, pdf:c.part.file, goal:c.piece.bpm, bar:$('#pl-bar'), set:$('#pl-set')});
+    inlineMount = mountPdf($('#inline-pdf'), c.part.file, null, function(h){ if(player) player.page(h) });
+  } else if(c.part) inlineMount = mountPdf($('#inline-pdf'), c.part.file, null);
   updatePresets(); updateMini();
 }
 
@@ -197,7 +183,7 @@ window.addEventListener('hashchange', route);
 /* ---------- PDF tonen (pdf.js) ---------- */
 if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
 function unmount(m){ if(m){ m.dead = true; if(m.io) m.io.disconnect(); } }
-function mountPdf(box, file, root){
+function mountPdf(box, file, root, onPage){
   var m = {dead:false, io:null};
   box.innerHTML = '<p class="vmsg">Laden…</p>';
   if(!window.pdfjsLib){ box.innerHTML = '<p class="vmsg">De lezer kon niet laden. Gebruik de knop Download.</p>'; return m; }
@@ -210,7 +196,7 @@ function mountPdf(box, file, root){
       box.appendChild(d); holders.push(d);
     }
     m.io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if(en.isIntersecting && !en.target.dataset.done){ en.target.dataset.done='1'; renderPage(pdf, en.target, m) } });
+      entries.forEach(function(en){ if(en.isIntersecting && !en.target.dataset.done){ en.target.dataset.done='1'; renderPage(pdf, en.target, m, onPage) } });
     }, {root:root, rootMargin:'800px 0px'});
     holders.forEach(function(h){m.io.observe(h)});
   }).catch(function(){
@@ -218,7 +204,7 @@ function mountPdf(box, file, root){
   });
   return m;
 }
-function renderPage(pdf, holder, m){
+function renderPage(pdf, holder, m, onPage){
   pdf.getPage(+holder.dataset.n).then(function(page){
     if(m.dead) return;
     var base = page.getViewport({scale:1});
@@ -227,7 +213,7 @@ function renderPage(pdf, holder, m){
     var vp = page.getViewport({scale:(cssW*dpr)/base.width});
     var c = document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
     return page.render({canvasContext:c.getContext('2d'), viewport:vp}).promise.then(function(){
-      if(m.dead) return; holder.style.minHeight=''; holder.appendChild(c);
+      if(m.dead) return; holder.style.minHeight=''; holder.appendChild(c); if(onPage) onPage(holder);
     });
   });
 }
