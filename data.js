@@ -275,8 +275,7 @@ window.DATA = {
     "gevorderd"
    ],
    "bpm": [
-    80,
-    110
+    120
    ],
    "score": "score/marsvaardig-junior.json"
   },
