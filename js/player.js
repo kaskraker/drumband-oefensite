@@ -44,6 +44,7 @@ function Player(opts){
   P.o = opts; P.voice = opts.voice; P.pdf = opts.pdf;
   P.bpm = parseInt(store.get('pl-bpm-'+opts.id, String(opts.bpm || 90)), 10) || 90;
   P.all = store.get('pl-all', '0') === '1';
+  P.mine = store.get('pl-mine', '1') === '1';
   P.click = store.get('pl-click', '0') === '1';
   P.loop = false;
   P.running = false; P.pos = 0; P.q = []; P.srcs = []; P.rr = 0; P.raf = 0; P.timer = 0;
@@ -79,11 +80,11 @@ Player.prototype.render = function(){
         return '<button type="button" class="mx-chip'+(g?' goal':'')+'" data-bpmv="'+b+'" aria-pressed="false">'+b+(g?'<small>doel</small>':'')+'</button>' }).join('')+
     '</div></div>'+
     '<div class="pl-opts">'+
-      '<div class="pl-seg" role="group" aria-label="Wat hoor je">'+
-        '<button type="button" data-mix="0" aria-pressed="'+(!P.all)+'">Alleen '+NAMES[P.voice]+'</button>'+
-        '<button type="button" data-mix="1" aria-pressed="'+P.all+'">Met '+others.join(' en ')+'</button>'+
-      '</div>'+
+      '<span class="pl-lbl">Je hoort</span>'+
+      '<button type="button" class="pl-tog" data-pl="mine" aria-pressed="'+P.mine+'">'+cap(NAMES[P.voice])+'</button>'+
+      '<button type="button" class="pl-tog" data-pl="all" aria-pressed="'+P.all+'">'+cap(others.join(' en '))+'</button>'+
       '<button type="button" class="pl-tog" data-pl="click" aria-pressed="'+P.click+'">Metronoom</button>'+
+      '<span class="pl-sep" aria-hidden="true"></span>'+
       '<button type="button" class="pl-tog" data-pl="loop" aria-pressed="false">Lijn herhalen</button>'+
     '</div>'+
     '<p class="pl-hint">Tik op een maat in de partituur om daar te beginnen.</p>';
@@ -92,11 +93,8 @@ Player.prototype.render = function(){
   q('[data-pl="go"]').onclick = function(){ P.toggle() };
   P.hold(q('[data-pl="minus"]'), -1); P.hold(q('[data-pl="plus"]'), 1);
   qa('[data-bpmv]').forEach(function(b){ b.onclick = function(){ P.setBpm(+b.dataset.bpmv) } });
-  qa('[data-mix]').forEach(function(b){ b.onclick = function(){
-    P.all = b.dataset.mix === '1'; store.set('pl-all', P.all?'1':'0');
-    qa('[data-mix]').forEach(function(x){ x.setAttribute('aria-pressed', String(x===b)) });
-    P.reschedule();
-  }});
+  q('[data-pl="mine"]').onclick = function(){ P.mine = !P.mine; store.set('pl-mine', P.mine?'1':'0'); this.setAttribute('aria-pressed', String(P.mine)); P.reschedule() };
+  q('[data-pl="all"]').onclick = function(){ P.all = !P.all; store.set('pl-all', P.all?'1':'0'); this.setAttribute('aria-pressed', String(P.all)); P.reschedule() };
   q('[data-pl="click"]').onclick = function(){ P.click = !P.click; store.set('pl-click', P.click?'1':'0'); this.setAttribute('aria-pressed', String(P.click)); P.reschedule() };
   q('[data-pl="loop"]').onclick = function(){ P.loop = !P.loop; this.setAttribute('aria-pressed', String(P.loop)); P.reschedule() };
   P.chips = q('[data-pl="chips"]');
@@ -104,6 +102,7 @@ Player.prototype.render = function(){
   P.pages = [];
   P.setBpm(P.bpm, true);
 };
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1) }
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 
 Player.prototype.msg = function(t, t2){
@@ -251,7 +250,7 @@ Player.prototype.note = function(voice, n, t, mine){
 };
 Player.prototype.measure = function(i, t, from){
   var P = this, d = P.d, m = d.seq[i], q = 60 / P.bpm, len = d.measures[m].len;
-  var voices = P.all ? Object.keys(d.parts) : [P.voice];
+  var voices = Object.keys(d.parts).filter(function(v){ return v === P.voice ? P.mine : P.all });
   voices.forEach(function(v){
     d.parts[v][m].forEach(function(n){ if(n[0] >= from - 1e-6) P.note(v, n, t + (n[0] - from) * q, v === P.voice) });
   });

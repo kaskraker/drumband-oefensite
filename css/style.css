@@ -354,3 +354,6 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 /* de speelbalk is slank genoeg: altijd bovenaan laten plakken, ook op lage schermen */
 @media (max-height:720px){.vmini.inline.stuck.pl{position:sticky}}
 .site-name{text-decoration:none}.site-name:hover{opacity:.85}
+.pl-lbl{font-size:.9rem;font-weight:600;color:var(--muted);margin-right:2px}
+.pl-sep{width:1px;align-self:stretch;background:var(--line);margin:4px 4px}
+@media (max-width:520px){.pl-lbl{flex-basis:100%}.pl-sep{display:none}}
