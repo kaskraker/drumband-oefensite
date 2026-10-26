@@ -306,3 +306,13 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .vtempos .chip.goal.now{background:var(--ink);border-color:var(--ink)}
 .vmini .vgo{align-self:flex-start;flex:none}
 @media (max-width:560px){.vmini .vrow{flex-wrap:wrap}.vtempos{flex-basis:100%;order:3}.vmini .vdots{display:flex;margin-left:auto}}
+
+/* duidelijk een metronoom: label + grote gekleurde tel-bolletjes */
+.vmini .vtop{justify-content:space-between;flex-wrap:nowrap}
+.vlabel{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:1.05rem;color:var(--ink)}
+.vmini .vdots{gap:10px;margin-left:0;display:flex}
+.vmini .vdots i{width:30px;height:30px;border:3px solid var(--ink);background:var(--bone);transition:transform .06s}
+.vmini .vdots i.hit{background:var(--ink);transform:scale(1.18)}
+.vmini .vdots i.hit.first{background:var(--red);border-color:var(--red)}
+.vmini .vdots i:first-child{border-color:var(--red)}
+@media (max-width:560px){.vmini .vrow{flex-wrap:nowrap}.vtempos{flex-basis:auto;order:0}.vmini .vdots{display:flex}.vmini .vrow:not(.vtop){align-items:flex-start}.vmini .vgo{min-width:78px}}
