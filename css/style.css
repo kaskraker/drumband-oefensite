@@ -104,24 +104,8 @@ section.block>h2{font-size:1.6rem;color:var(--red);margin-bottom:16px}
 .mpanel{position:fixed;z-index:70;right:max(12px,env(safe-area-inset-right,0px));left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));margin-left:auto;max-width:440px;background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:16px;box-shadow:0 8px 28px rgba(28,18,20,.35)}
 .mpanel[hidden]{display:none}
 .mtop{display:flex;align-items:center;justify-content:space-between}
-.bpm{display:flex;align-items:baseline;gap:8px}
-.bpm span{font-family:var(--body);font-weight:700;font-size:3.8rem;line-height:1;color:var(--red);font-variant-numeric:tabular-nums}
-.bpm small{font-size:1rem;font-weight:600;color:var(--muted)}
-.dots{display:flex;gap:10px;margin:10px 0 14px;min-height:20px}
-.dots i{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);display:block}
-.dots i.hit{background:var(--ink)}
-.dots i.hit.first{background:var(--red);border-color:var(--red)}
-.mrow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.mrow.wrap{flex-wrap:wrap}
-.mrow input[type=range]{flex:1;min-width:0;accent-color:var(--red);height:36px}
-.step{min-width:46px;min-height:46px;border:2px solid var(--ink);background:transparent;border-radius:4px;font-weight:700;cursor:pointer;padding:0 6px}
-.step:hover{border-color:var(--red);color:var(--red)}
-.sel{display:inline-flex;align-items:center;gap:8px;font-weight:600}
-.sel select{background:var(--paper);border:2px solid var(--ink);border-radius:4px;min-height:46px;padding:0 10px}
 .chip{min-height:46px;padding:0 16px;border:2px solid var(--red);border-radius:23px;background:transparent;color:var(--red);font-weight:700;cursor:pointer}
 .chip:hover{background:var(--red);color:var(--bone)}
-.btn.big{width:100%;min-height:56px;font-size:1.15rem}
-.btn.big.on{background:var(--ink);border-color:var(--ink)}
 
 .foot{color:var(--muted);font-size:.95rem;padding-block:8px 0}
 body.lock{overflow:hidden}
@@ -131,18 +115,6 @@ body.lock{overflow:hidden}
 
 /* metronoom onder de partituur */
 .vmini{display:flex;align-items:center;gap:8px;background:var(--bone);border-top:2px solid var(--ink);padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
-.vgo{min-width:92px;min-height:52px;border:2px solid var(--red);border-radius:4px;background:var(--red);color:var(--bone);font-weight:700;font-size:1.05rem;cursor:pointer}
-.vgo.on{background:var(--ink);border-color:var(--ink)}
-.vstep{width:52px;min-height:52px;border:2px solid var(--ink);border-radius:4px;background:transparent;font-weight:700;font-size:1.5rem;line-height:1;cursor:pointer;touch-action:manipulation}
-.vstep:active{background:var(--ink);color:var(--bone)}
-.vbpm{min-height:52px;padding:0 10px;background:transparent;border:0;cursor:pointer;display:inline-flex;align-items:baseline;gap:4px;align-self:center}
-.vbpm b{font-size:1.9rem;line-height:52px;font-variant-numeric:tabular-nums;min-width:2.3ch;text-align:right}
-.vbpm small{font-size:.95rem;font-weight:600;color:var(--muted)}
-.vdots{display:flex;gap:6px;margin-left:auto}
-.vdots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);display:block}
-.vdots i.hit{background:var(--ink)}
-.vdots i.hit.first{background:var(--red);border-color:var(--red)}
-@media (max-width:420px){.vgo{min-width:78px}.vstep{width:46px}.vdots{display:none}}
 
 /* groepskeuze in de kop */
 .lvl{display:inline-flex;border:2px solid var(--bone);border-radius:4px;overflow:hidden}
@@ -216,14 +188,7 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .vmini.inline:not(.stuck){position:static;box-shadow:none}
 
 .vmini{flex-direction:column;align-items:stretch;gap:10px}
-.vmini .vrow{display:flex;align-items:center;gap:8px}
-.vmini .vrow.wrap{flex-wrap:wrap}
-.vstep.sm{width:52px;min-height:40px;font-size:1.05rem}
-.vrange{flex:1;min-width:0;accent-color:var(--red);height:40px}
-.vsel{min-height:40px;padding:0 10px;border:2px solid var(--ink);border-radius:4px;background:var(--paper);font:600 1rem var(--body);color:var(--ink)}
-.vmini .chip{min-height:40px;padding:0 14px}
 .vpresets{display:inline-flex;gap:8px;flex-wrap:wrap}
-@media (max-width:420px){.vdots{display:none}}
 @media (max-height:720px){.vmini.inline.stuck{position:static}}
 
 /* metronoom als witte strook bovenaan de partituur */
@@ -237,28 +202,11 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 
 /* compacte balk + tempo-popup */
 .vmini{position:relative}
-.vmini .vrow{flex-wrap:wrap}
-.vbpm{border-radius:6px;padding:0 10px;border:2px dashed transparent}
-.vbpm b{border-bottom:3px solid var(--red)}
-.vbpm:hover,.vbpm.open{background:var(--bone)}
-.vpop{position:absolute;left:14px;right:14px;top:calc(100% - 4px);z-index:40;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:12px;box-shadow:0 8px 24px rgba(28,18,20,.28)}
-.vpop[hidden]{display:none}
-.vpop-row{display:flex;align-items:center;gap:10px}
-.vpop .vstep{width:56px;min-height:44px;font-size:1.1rem;flex:none}
-.vpop .vrange{height:44px}
-.vmini .vdots{margin-left:auto}
 .vmini{gap:0}
 .rlgo.on{background:var(--ink);border-color:var(--ink)}
 
 /* tempo-keuze: vaste stappen */
 .vmini.inline:not(.stuck){position:relative}
-.vpop{display:flex;flex-wrap:wrap;gap:8px;left:14px;right:auto;max-width:calc(100% - 28px)}
-.vpop[hidden]{display:none}
-.vpop .chip{min-width:64px;min-height:48px;font-size:1.15rem;font-weight:700;justify-content:center}
-.vpop .chip.now{background:var(--ink);border-color:var(--ink);color:var(--bone)}
-.vpop .chip.goal{background:var(--red);border-color:var(--red);color:var(--bone)}
-.vpop .chip.goal.now{background:var(--ink);border-color:var(--ink)}
-.vbpm::after{content:"";width:0;height:0;border:6px solid transparent;border-top-color:var(--ink);border-bottom:0;align-self:center;margin-left:2px}
 
 /* Lulo staat van nature ruim: letters dichter bij elkaar */
 .piece-head h1{letter-spacing:-.05em}
@@ -299,21 +247,66 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .piece-head .inst{flex-basis:100%;margin:-6px 0 0;font-size:1.6rem;font-weight:700;color:var(--ink)}
 
 /* tempo's rechtstreeks in de balk */
-.vmini .vrow{flex-wrap:nowrap;align-items:center;gap:12px}
-.vtempos{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}
-.vtempos .chip{min-width:56px;min-height:48px;padding:0 12px;font-size:1.1rem;font-weight:700;justify-content:center}
-.vtempos .chip.now{background:var(--ink);border-color:var(--ink);color:var(--bone)}
-.vtempos .chip.goal{background:var(--red);border-color:var(--red);color:var(--bone)}
-.vtempos .chip.goal.now{background:var(--ink);border-color:var(--ink)}
-.vmini .vgo{align-self:flex-start;flex:none}
-@media (max-width:560px){.vmini .vrow{flex-wrap:wrap}.vtempos{flex-basis:100%;order:3}.vmini .vdots{display:flex;margin-left:auto}}
 
 /* duidelijk een metronoom: label + grote gekleurde tel-bolletjes */
-.vmini .vtop{justify-content:space-between;flex-wrap:nowrap}
-.vlabel{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:1.05rem;color:var(--ink)}
-.vmini .vdots{gap:10px;margin-left:0;display:flex}
-.vmini .vdots i{width:30px;height:30px;border:3px solid var(--ink);background:var(--bone);transition:transform .06s}
-.vmini .vdots i.hit{background:var(--ink);transform:scale(1.18)}
-.vmini .vdots i.hit.first{background:var(--red);border-color:var(--red)}
-.vmini .vdots i:first-child{border-color:var(--red)}
-@media (max-width:560px){.vmini .vrow{flex-wrap:nowrap}.vtempos{flex-basis:auto;order:0}.vmini .vdots{display:flex}.vmini .vrow:not(.vtop){align-items:flex-start}.vmini .vgo{min-width:78px}}
+
+/* ===== metronoom (balk boven de partituur + paneel) ===== */
+.mx-play{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:56px;height:56px;border-radius:50%;border:0;background:var(--red);color:#fff;cursor:pointer;transition:background .15s,transform .1s;touch-action:manipulation}
+.mx-play:hover{background:var(--red-dark)}
+.mx-play:active{transform:scale(.95)}
+.mx-play svg{width:26px;height:26px;fill:currentColor}
+.mx-play .i-stop,.mx-play.on .i-play{display:none}
+.mx-play.on .i-stop{display:block}
+.mx-play.on{background:var(--ink)}
+.mx-play.wide{width:100%;height:56px;border-radius:28px;font-weight:700;font-size:1.15rem;margin-top:14px}
+.mx-play.wide svg{width:22px;height:22px}
+.mx-tempo{display:inline-flex;align-items:center;gap:6px}
+.mx-step{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font:700 1.6rem/1 var(--body);cursor:pointer;touch-action:manipulation;display:inline-flex;align-items:center;justify-content:center;padding:0 0 3px}
+.mx-step:hover{border-color:var(--red);color:var(--red)}
+.mx-step:active{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.mx-bpm{display:flex;flex-direction:column;align-items:center;min-width:3.4ch;line-height:1}
+.mx-bpm b{font-size:2rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.mx-bpm small{font-size:.8rem;font-weight:600;color:var(--muted);margin-top:2px}
+.mx-tempo.big{display:flex;justify-content:center;gap:18px;margin:10px 0 4px}
+.mx-tempo.big .mx-step{width:56px;height:56px;font-size:2rem}
+.mx-tempo.big .mx-bpm{flex-direction:row;align-items:baseline;gap:6px;min-width:4.6ch;justify-content:center}
+.mx-tempo.big .mx-bpm b{font-size:3.6rem;color:var(--red)}
+.mx-tempo.big .mx-bpm small{font-size:1rem}
+.mx-dots{display:flex;gap:8px;margin-left:auto}
+.mx-dots i{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;font:700 .95rem/1 var(--body);font-style:normal;color:var(--ink);background:var(--paper);transition:transform .06s,background .06s}
+.mx-dots i:first-child{border-color:var(--red);color:var(--red)}
+.mx-dots i.hit{background:var(--ink);border-color:var(--ink);color:var(--bone);transform:scale(1.15)}
+.mx-dots i.hit.first{background:var(--red);border-color:var(--red);color:#fff}
+.mx-dots.big{justify-content:center;margin:12px 0 16px;gap:12px}
+.mx-dots.big i{width:44px;height:44px;font-size:1.1rem}
+.mx-row{display:flex;align-items:center;gap:14px}
+.mx-chiprow{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.mx-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding:2px 2px 4px;scroll-behavior:smooth}
+.mx-chips.more{-webkit-mask-image:linear-gradient(to right,#000 82%,transparent);mask-image:linear-gradient(to right,#000 82%,transparent)}
+.mx-chips.less{-webkit-mask-image:linear-gradient(to left,#000 82%,transparent);mask-image:linear-gradient(to left,#000 82%,transparent)}
+.mx-chips.more.less{-webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent)}
+.mx-chips.wrap{flex-wrap:wrap;overflow:visible;align-items:center}
+.mx-chips:empty{display:none}
+.mx-chip{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:58px;height:46px;padding:0 12px;border-radius:23px;border:2px solid var(--line);background:var(--paper);color:var(--ink);font:700 1.05rem/1 var(--body);font-variant-numeric:tabular-nums;cursor:pointer}
+.mx-chip:hover{border-color:var(--ink)}
+.mx-chip small{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--red);margin-top:2px}
+.mx-chip.goal{border-color:var(--red);color:var(--red)}
+.mx-chip.now{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.mx-chip.now small{color:var(--bone)}
+.mx-lbl{flex-basis:100%;font-size:.9rem;font-weight:600;color:var(--muted)}
+.mx-title{font-size:1.2rem}
+.mx-range{display:block;width:100%;accent-color:var(--red);height:36px;margin:6px 0 0}
+.mx-opts{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.mx-sel{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.mx-sel select{background:var(--paper);border:2px solid var(--ink);border-radius:23px;min-height:46px;padding:0 14px;font:600 1rem var(--body);color:var(--ink)}
+.mx-tap{min-height:46px;padding:0 18px;border-radius:23px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:700;cursor:pointer;margin-left:auto}
+.mx-tap:active{background:var(--ink);color:var(--bone)}
+@media (max-width:520px){
+  .mx-row{gap:10px}
+  .mx-play{width:52px;height:52px}
+  .mx-step{width:40px;height:40px;font-size:1.45rem}
+  .mx-bpm b{font-size:1.75rem}
+  .mx-dots{gap:6px}
+  .mx-dots i{width:28px;height:28px;font-size:.85rem}
+}
+

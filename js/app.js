@@ -249,6 +249,7 @@ function updateMini(){
     mini.classList.add('inline'); mini.hidden = true;
   }
   document.body.classList.remove('has-mini');
+  if(!mini.hidden && typeof markPop==='function') requestAnimationFrame(markPop);
 }
 function setPanel(open){
   panel.hidden = !open; mbtn.setAttribute('aria-expanded', String(open));
@@ -259,14 +260,14 @@ var pop = $('#vm-pop');
 $('#mclose').onclick = function(){setPanel(false)};
 function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
-  M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
+  M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#vm-bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
   markPop();
   syncRl();
 }
 var DOTS = ['#dots','#vm-dots'];
 function buildDots(){
-  DOTS.forEach(function(s){var d=$(s); d.innerHTML=''; for(var i=0;i<M.beats;i++){d.appendChild(document.createElement('i'))}});
+  DOTS.forEach(function(s){var d=$(s); d.innerHTML=''; for(var i=0;i<M.beats;i++){var e=document.createElement('i'); e.textContent=i+1; d.appendChild(e)}});
 }
 function tick(time, accent){
   var o = M.ctx.createOscillator(), g = M.ctx.createGain();
@@ -294,7 +295,8 @@ function paint(){
   M.raf = requestAnimationFrame(paint);
 }
 function setRunUi(on){
-  ['#mgo','#vm-go'].forEach(function(s){ $(s).textContent = on?'Stop':'Start'; $(s).classList.toggle('on', on) });
+  ['#mgo','#vm-go'].forEach(function(s){ var b=$(s); b.classList.toggle('on', on); b.setAttribute('aria-label', on?'Metronoom stoppen':'Metronoom starten') });
+  $('#mgo .mx-golbl').textContent = on ? 'Stop' : 'Start';
   mbtn.classList.toggle('on', on); setBpm(M.bpm);
 }
 function start(){
@@ -326,9 +328,7 @@ function hold(btn, delta){
   ['pointerup','pointerleave','pointercancel'].forEach(function(ev){btn.addEventListener(ev,end)});
   btn.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setBpm(M.bpm+delta) } });
 }
-hold($('#mminus'),-1); hold($('#mplus'),1);
-$('#mminus5').onclick = function(){setBpm(M.bpm-5)};
-$('#mplus5').onclick = function(){setBpm(M.bpm+5)};
+hold($('#mminus'),-1); hold($('#mplus'),1); hold($('#vm-minus'),-1); hold($('#vm-plus'),1);
 $('#mrange').oninput = function(e){setBpm(+e.target.value)};
 
 function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); buildDots()}
@@ -351,22 +351,33 @@ function stepList(){
   return {list:out, goal:goal || []};
 }
 function markPop(){
-  each('#vm-pop [data-bpm]', function(c){c.classList.toggle('now', +c.dataset.bpm === M.bpm)});
+  var now = null;
+  each('.mx-chips [data-bpm]', function(c){ var on = +c.dataset.bpm === M.bpm; c.classList.toggle('now', on); c.setAttribute('aria-pressed', String(on)); if(on && c.parentNode===pop) now = c; });
+  if(now && pop.scrollWidth > pop.clientWidth){
+    var l = now.offsetLeft - pop.offsetLeft, r = l + now.offsetWidth;
+    if(l < pop.scrollLeft || r > pop.scrollLeft + pop.clientWidth) pop.scrollLeft = l - (pop.clientWidth - now.offsetWidth)/2;
+  }
+  if(pop.clientWidth) fadePop();
+}
+function fadePop(){ pop.classList.toggle('more', pop.scrollLeft + pop.clientWidth < pop.scrollWidth - 4); pop.classList.toggle('less', pop.scrollLeft > 4); }
+pop.addEventListener('scroll', fadePop, {passive:true}); window.addEventListener('resize', fadePop);
+function chip(b, goal){
+  return '<button type="button" class="mx-chip'+(goal?' goal':'')+'" data-bpm="'+b+'" aria-pressed="false">'+b+(goal?'<small>doel</small>':'')+'</button>';
 }
 function updatePresets(){
   var s = stepList();
   var bt = (current.piece && current.piece.beats) || 4; if(bt !== M.beats) setBeats(bt);
-  pop.innerHTML = s.list.map(function(b){return '<button type="button" class="chip'+(s.goal.indexOf(b)>-1?' goal':'')+'" data-bpm="'+b+'">'+b+'</button>'}).join('');
+  pop.innerHTML = s.list.map(function(b){return chip(b, s.goal.indexOf(b)>-1)}).join('');
   each('#vm-pop [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
-  markPop();
   var box = $('#mpresets');
   if(box){
     var p = current.piece;
     if(p && p.bpm && p.bpm.length){
-      box.innerHTML = p.bpm.map(function(b){return '<button type="button" class="chip" data-bpm="'+b+'">'+b+' bpm</button>'}).join('');
+      box.innerHTML = '<span class="mx-lbl">Doeltempo '+esc(p.title)+'</span>'+p.bpm.map(function(b){return chip(b, true)}).join('');
       each('#mpresets [data-bpm]', function(c){c.onclick=function(){setBpm(+c.dataset.bpm)}});
     } else box.innerHTML = '';
   }
+  markPop();
 }
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState==='visible' && M.running && navigator.wakeLock){ navigator.wakeLock.request('screen').then(function(w){M.wake=w}).catch(function(){}) }
