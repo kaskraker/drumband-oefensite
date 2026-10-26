@@ -5,7 +5,6 @@ window.DATA = {
    "title": "Walz Macabre",
    "status": "actueel",
    "color": "burgundy",
-   "score": null,
    "parts": [
     {
      "name": "Walz Macabre",
@@ -21,7 +20,6 @@ window.DATA = {
    "title": "Samba Queen",
    "status": "actueel",
    "color": "red",
-   "score": null,
    "parts": [
     {
      "name": "Agogo bells",
@@ -41,86 +39,8 @@ window.DATA = {
     },
     {
      "name": "Fielddrum",
-     "file": "files/samba-queen/fielddrum.pdf"
-    },
-    {
-     "name": "Snaredrum",
-     "file": "files/samba-queen/snaredrum.pdf"
-    },
-    {
-     "name": "Tim toms",
-     "file": "files/samba-queen/tim-toms.pdf"
-    }
-   ],
-   "bpm": [
-    65,
-    110
-   ],
-   "videos": {
-    "instruments": [
-     {
-      "name": "Snare drum",
-      "letters": [
-       {
-        "letter": "intro",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-intro.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-intro.mp4"
-        }
-       },
-       {
-        "letter": "A",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-A.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-A.mp4"
-        }
-       },
-       {
-        "letter": "B",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-B.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-B.mp4"
-        }
-       },
-       {
-        "letter": "C",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-C.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-C.mp4"
-        }
-       },
-       {
-        "letter": "D",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-D.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-D.mp4"
-        }
-       },
-       {
-        "letter": "E",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-E.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-E.mp4"
-        }
-       },
-       {
-        "letter": "F",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-F.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-F.mp4"
-        }
-       },
-       {
-        "letter": "G",
-        "video": {
-         "traag": "video/samba-queen/snaredrum-traag-G.mp4",
-         "snel": "video/samba-queen/snaredrum-snel-G.mp4"
-        }
-       }
-      ]
-     },
-     {
-      "name": "Field drum",
+     "file": "files/samba-queen/fielddrum.pdf",
+     "videos": {
       "letters": [
        {
         "letter": "intro",
@@ -180,8 +100,80 @@ window.DATA = {
        }
       ]
      }
-    ]
-   },
+    },
+    {
+     "name": "Snaredrum",
+     "file": "files/samba-queen/snaredrum.pdf",
+     "videos": {
+      "letters": [
+       {
+        "letter": "intro",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-intro.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-intro.mp4"
+        }
+       },
+       {
+        "letter": "A",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-A.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-A.mp4"
+        }
+       },
+       {
+        "letter": "B",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-B.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-B.mp4"
+        }
+       },
+       {
+        "letter": "C",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-C.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-C.mp4"
+        }
+       },
+       {
+        "letter": "D",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-D.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-D.mp4"
+        }
+       },
+       {
+        "letter": "E",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-E.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-E.mp4"
+        }
+       },
+       {
+        "letter": "F",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-F.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-F.mp4"
+        }
+       },
+       {
+        "letter": "G",
+        "video": {
+         "traag": "video/samba-queen/snaredrum-traag-G.mp4",
+         "snel": "video/samba-queen/snaredrum-snel-G.mp4"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "name": "Tim toms",
+     "file": "files/samba-queen/tim-toms.pdf"
+    }
+   ],
+   "bpm": [
+    65,
+    110
+   ],
    "levels": [
     "gevorderd"
    ]
@@ -191,7 +183,6 @@ window.DATA = {
    "title": "Jungle Express",
    "status": "actueel",
    "color": "teal",
-   "score": null,
    "parts": [
     {
      "name": "Bassdrum",
@@ -238,7 +229,6 @@ window.DATA = {
    "title": "Marsvaardig Junior",
    "status": "classic",
    "color": "burgundy",
-   "score": null,
    "parts": [
     {
      "name": "Bas drum",
@@ -271,7 +261,6 @@ window.DATA = {
    "title": "Full Scope",
    "status": "archief",
    "color": "burgundy",
-   "score": null,
    "parts": [
     {
      "name": "Bassdrum",
