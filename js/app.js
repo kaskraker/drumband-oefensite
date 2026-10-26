@@ -67,7 +67,7 @@ function instrumentPage(p, part, single){
   if(part.videos) h += videoSection(part);
   h += '<section class="sec"><div class="sechead"><h2>Partituur</h2>'+
     '<a class="btn" href="'+enc(part.file)+'" download="'+esc(p.title+' - '+part.name)+'.pdf">'+ICON_DL_S+'<span>Download</span></a></div>'+
-    '<div id="inline-pdf" class="inline-pdf"></div></section>';
+    '<div class="scorewrap"><div id="mini-slot"></div><div id="inline-pdf" class="inline-pdf"></div></div></section>';
   return h;
 }
 
@@ -90,6 +90,7 @@ function videoSection(part){
 
 function draw(){
   unmount(inlineMount); inlineMount = null;
+  if(mini.parentNode !== document.body) document.body.appendChild(mini);
   var c = current;
   $('#main').innerHTML = c.basics ? basicsPage() : c.part ? instrumentPage(c.piece, c.part, c.single) : c.piece ? choosePage(c.piece) : home();
   each('[data-metro]', function(b){b.onclick=function(){setBpm(+b.dataset.metro); start(); setPanel(true)}});
@@ -211,8 +212,16 @@ document.addEventListener('keydown', function(e){
 var M = {bpm:parseInt(store.get('bpm','90'),10)||90, beats:4, running:false, ctx:null, next:0, beat:0, timer:null, queue:[], raf:0, wake:null};
 var panel = $('#mpanel'), mbtn = $('#mbtn'), mini = $('#vmini');
 function updateMini(){
-  var show = !viewer.hidden || !!current.part;
-  mini.hidden = !show; document.body.classList.toggle('has-mini', show);
+  var slot = $('#mini-slot'), inViewer = !viewer.hidden;
+  if(!inViewer && current.part && slot){
+    if(mini.parentNode !== slot) slot.appendChild(mini);
+    mini.classList.remove('fixedbar'); mini.classList.add('inline'); mini.hidden = false;
+    document.body.classList.remove('has-mini');
+  } else {
+    if(mini.parentNode !== document.body) document.body.appendChild(mini);
+    mini.classList.add('fixedbar'); mini.classList.remove('inline');
+    mini.hidden = !inViewer; document.body.classList.toggle('has-mini', inViewer);
+  }
 }
 function setPanel(open){
   panel.hidden = !open; mbtn.setAttribute('aria-expanded', String(open));

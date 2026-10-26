@@ -234,3 +234,8 @@ svg .t.red{fill:var(--red)}
 }
 .src{margin-top:34px;font-size:.95rem;color:var(--muted)}
 .src a{color:var(--muted)}
+
+/* metronoom vast boven de partituur, even breed als de partituur */
+.scorewrap{max-width:920px;margin:0 auto}
+.vmini.inline{position:sticky;top:0;z-index:30;margin:0 0 14px;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;background:var(--bone);box-shadow:0 3px 10px rgba(28,18,20,.18)}
+.vmini.inline[hidden]{display:none}
