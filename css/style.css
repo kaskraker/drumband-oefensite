@@ -90,7 +90,7 @@ section.block>h2{font-size:1.6rem;color:var(--red);margin-bottom:16px}
 .vbar h2{flex:1;min-width:0;font-size:1rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
 .vbtn{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;background:none;border:0;cursor:pointer;color:var(--ink);border-radius:4px}
 .vbtn:hover{color:var(--red)}
-.vpages{flex:1;overflow:auto;padding:16px max(12px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;align-items:center;gap:14px;-webkit-overflow-scrolling:touch}
+.vpages{flex:1;overflow:auto;padding:16px max(12px,env(safe-area-inset-right,0px)) 24px max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;align-items:center;gap:14px;-webkit-overflow-scrolling:touch}
 .vpage{width:100%;max-width:920px;background:#fff;box-shadow:0 1px 6px rgba(28,18,20,.25)}
 .vpage canvas{display:block;width:100%;height:auto}
 .vmsg{padding:40px 0;font-weight:600}
@@ -134,3 +134,18 @@ body.lock{overflow:hidden}
 .tiles.two{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
 .tiles.two .tile{min-height:200px}
 .tiles.two .tile h3{font-size:clamp(1.5rem,6vw,2rem)}
+
+/* metronoom onder de partituur */
+.vmini{display:flex;align-items:center;gap:8px;background:var(--bone);border-top:2px solid var(--ink);padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.vgo{min-width:92px;min-height:52px;border:2px solid var(--red);border-radius:4px;background:var(--red);color:var(--bone);font-weight:700;font-size:1.05rem;cursor:pointer}
+.vgo.on{background:var(--ink);border-color:var(--ink)}
+.vstep{width:52px;min-height:52px;border:2px solid var(--ink);border-radius:4px;background:transparent;font-weight:700;font-size:1.5rem;line-height:1;cursor:pointer;touch-action:manipulation}
+.vstep:active{background:var(--ink);color:var(--bone)}
+.vbpm{min-height:52px;padding:0 10px;background:transparent;border:0;cursor:pointer;display:inline-flex;align-items:baseline;gap:4px;align-self:center}
+.vbpm b{font-size:1.9rem;line-height:52px;font-variant-numeric:tabular-nums;min-width:2.3ch;text-align:right}
+.vbpm small{font-size:.95rem;font-weight:600;color:var(--muted)}
+.vdots{display:flex;gap:6px;margin-left:auto}
+.vdots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);display:block}
+.vdots i.hit{background:var(--ink)}
+.vdots i.hit.first{background:var(--red);border-color:var(--red)}
+@media (max-width:420px){.vgo{min-width:78px}.vstep{width:46px}.vdots{display:none}}

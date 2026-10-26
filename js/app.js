@@ -209,15 +209,16 @@ function setPanel(open){
   if(open) $('#mgo').focus();
 }
 mbtn.onclick = function(){setPanel(panel.hidden)};
-$('#vmetro').onclick = function(){setPanel(panel.hidden)};
+$('#vm-bpm').onclick = function(){setPanel(panel.hidden)};
 $('#mclose').onclick = function(){setPanel(false)};
 function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
   M.bpm = clampBpm(v); $('#bpmv').textContent = M.bpm; $('#mrange').value = M.bpm; store.set('bpm', String(M.bpm));
   mbtn.querySelector('.lbl').textContent = M.running ? M.bpm+' bpm' : 'Metronoom';
+  $('#vm-bpm b').textContent = M.bpm;
 }
 function buildDots(){
-  var d = $('#dots'); d.innerHTML=''; for(var i=0;i<M.beats;i++){d.appendChild(document.createElement('i'))}
+  ['#dots','#vm-dots'].forEach(function(s){var d=$(s); d.innerHTML=''; for(var i=0;i<M.beats;i++){d.appendChild(document.createElement('i'))}});
 }
 function tick(time, accent){
   var o = M.ctx.createOscillator(), g = M.ctx.createGain();
@@ -235,10 +236,10 @@ function scheduler(){
   }
 }
 function paint(){
-  var now = M.ctx.currentTime, dots = $('#dots').children;
+  var now = M.ctx.currentTime;
   while(M.queue.length && M.queue[0].t <= now){
     var q = M.queue.shift();
-    Array.prototype.forEach.call(dots, function(d,i){d.className = i===q.b ? 'hit'+(q.b===0?' first':'') : ''});
+    ['#dots','#vm-dots'].forEach(function(s){ Array.prototype.forEach.call($(s).children, function(d,i){d.className = i===q.b ? 'hit'+(q.b===0?' first':'') : ''}) });
   }
   M.raf = requestAnimationFrame(paint);
 }
@@ -249,20 +250,31 @@ function start(){
   M.ctx.resume();
   M.running = true; M.beat = 0; M.queue = []; M.next = M.ctx.currentTime + 0.08;
   M.timer = setInterval(scheduler, 25); scheduler(); M.raf = requestAnimationFrame(paint);
-  $('#mgo').textContent='Stop'; $('#mgo').classList.add('on'); mbtn.classList.add('on'); $('#vmetro').classList.add('on'); setBpm(M.bpm);
+  $('#mgo').textContent='Stop'; $('#mgo').classList.add('on'); mbtn.classList.add('on'); $('#vm-go').textContent='Stop'; $('#vm-go').classList.add('on'); setBpm(M.bpm);
   if(navigator.wakeLock && navigator.wakeLock.request){ navigator.wakeLock.request('screen').then(function(w){M.wake=w}).catch(function(){}) }
 }
 function stop(){
   if(!M.running) return;
   M.running=false; clearInterval(M.timer); cancelAnimationFrame(M.raf); M.queue=[];
-  Array.prototype.forEach.call($('#dots').children, function(d){d.className=''});
-  $('#mgo').textContent='Start'; $('#mgo').classList.remove('on'); mbtn.classList.remove('on'); $('#vmetro').classList.remove('on'); setBpm(M.bpm);
+  ['#dots','#vm-dots'].forEach(function(s){ Array.prototype.forEach.call($(s).children, function(d){d.className=''}) });
+  $('#mgo').textContent='Start'; $('#mgo').classList.remove('on'); mbtn.classList.remove('on'); $('#vm-go').textContent='Start'; $('#vm-go').classList.remove('on'); setBpm(M.bpm);
   if(M.wake){try{M.wake.release()}catch(e){} M.wake=null}
 }
-$('#mgo').onclick = function(){ M.running ? stop() : start() };
-$('#mminus').onclick = function(){setBpm(M.bpm-1)};
+function toggle(){ M.running ? stop() : start() }
+$('#mgo').onclick = toggle; $('#vm-go').onclick = toggle;
+/* ingedrukt houden herhaalt de stap */
+function hold(btn, delta){
+  var t1=0, t2=0, fired=false;
+  function end(){clearTimeout(t1); clearInterval(t2)}
+  btn.addEventListener('pointerdown', function(e){
+    e.preventDefault(); fired=true; setBpm(M.bpm+delta);
+    t1=setTimeout(function(){ t2=setInterval(function(){setBpm(M.bpm+delta)}, 90) }, 450);
+  });
+  ['pointerup','pointerleave','pointercancel'].forEach(function(ev){btn.addEventListener(ev,end)});
+  btn.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setBpm(M.bpm+delta) } });
+}
+hold($('#mminus'),-1); hold($('#mplus'),1); hold($('#vm-minus'),-1); hold($('#vm-plus'),1);
 $('#mminus5').onclick = function(){setBpm(M.bpm-5)};
-$('#mplus').onclick = function(){setBpm(M.bpm+1)};
 $('#mplus5').onclick = function(){setBpm(M.bpm+5)};
 $('#mrange').oninput = function(e){setBpm(+e.target.value)};
 $('#mbeats').onchange = function(e){M.beats = +e.target.value; M.beat=0; buildDots()};
