@@ -13,7 +13,7 @@ var ICON_DL_S = ICON_DL.replace(/width="22" height="22"/,'width="18" height="18"
 var level = store.get('level','gevorderd'); if(level!=='starter' && level!=='gevorderd') level='gevorderd';
 var inLevel = function(x){return x.levels.indexOf(level)>-1};
 var video = {tempo:'snel', letter:'intro', rate:1, loop:true};
-var current = {piece:null, part:null, single:false, view:''};
+var current = {piece:null, part:null, single:false, basics:false, view:''};
 var inlineMount = null;
 
 function findPiece(id){return DATA.pieces.filter(function(p){return p.id===id})[0]}
@@ -29,6 +29,7 @@ function home(){
   var by = function(st){return DATA.pieces.filter(function(p){return p.status===st && inLevel(p)})};
   var now = by('actueel'), cls = by('classic'), arch = by('archief');
   var h = '';
+  if(level==='starter') h += '<section class="block"><h2>Voor je begint</h2><div class="tiles"><a class="tile" href="#basics"><h3>De basics</h3></a></div></section>';
   if(now.length) h += '<section class="block"><h2>Nu aan de beurt</h2>'+tiles(now,'')+'</section>';
   if(cls.length) h += '<section class="block"><h2>Classics</h2>'+tiles(cls,'light')+'</section>';
   var groups = {}, order = [];
@@ -44,6 +45,42 @@ function home(){
   if(arch.length) h += '<section class="block archive"><h2>Archief</h2><ul class="list">'+arch.map(function(p){
     return '<li><a class="open" style="display:block;text-decoration:none" href="#'+p.id+'">'+esc(p.title)+'</a></li>'}).join('')+'</ul></section>';
   return h;
+}
+
+
+/* ---------- de basics (starters) ---------- */
+function basicsPage(){
+  var li = function(a){return a.map(function(t){return '<li>'+t+'</li>'}).join('')};
+  return '<a class="back" href="#">← Terug</a><div class="piece-head"><h1>De basics</h1></div>'+
+  '<div class="basics">'+
+  '<p class="lead">Drie dingen op een rij: hoe je achter de trommel staat, hoe je de stokken vasthoudt en hoe je op de trommel slaat.</p>'+
+  '<section class="sec"><h2>1. Hoe sta of zit je?</h2><ul>'+li([
+    'Sta rechtop met je voeten ongeveer op schouderbreedte. Laat je schouders zakken en je armen ontspannen hangen.',
+    'De trommel staat of hangt ongeveer op taillehoogte, een beetje gekanteld naar je toe. Je hoeft je armen niet op te tillen of te laten zakken om erbij te kunnen.',
+    'Zit je? Zet je stoel zo dat je heupen net boven je knieën zitten. Zit rechtop, niet helemaal vooraan op de stoel, en zet de trommel recht voor je.',
+    'Heb je een draagriem? Vraag aan een begeleider om hem voor je af te stellen.'])+'</ul></section>'+
+  '<section class="sec"><h2>2. Hoe houd je de stokken vast?</h2><ul>'+li([
+    'Pak de stok op ongeveer een derde vanaf het dikke uiteinde. Daar is hij in balans en voel je dat hij makkelijk beweegt.',
+    'Leg je duim tegen de stok, in de eerste plooi van je wijsvinger. Dat is het draaipunt van de stok.',
+    'Laat je andere vingers losjes rond de stok krullen. Ze houden hem bij, ze knijpen niet.',
+    'Draai je handen zodat de rug van je hand naar boven wijst. De knokkel van je wijsvinger is het hoogste punt.',
+    'Beide handen houden de stok op dezelfde manier vast.',
+    'Knijp niet te hard. De stok moet kunnen draaien en terugspringen. Een stijve greep is slecht voor je polsen en je handen.'])+'</ul></section>'+
+  '<section class="sec"><h2>3. Hoe sla je op de trommel?</h2><ul>'+li([
+    'Begin met de stokken schuin omhoog, ongeveer 10 tot 15 cm uit elkaar en met je ellebogen dicht bij je lichaam.',
+    'Raak het midden van het vel, elke keer op dezelfde plek.',
+    'Beweeg de stok recht naar beneden en recht omhoog, niet schuin.',
+    'Laat de stok vallen en laat hem vrij terugkaatsen. Druk hem niet in het vel.',
+    'Zachter spelen doe je met een lagere, kleinere beweging. Luider spelen doe je met een hogere beweging.'])+'</ul>'+
+   '<h3>De vier slagen</h3><dl class="strokes">'+
+    '<dt>Volle slag</dt><dd>Je start hoog, slaat, en de stok kaatst terug naar boven.</dd>'+
+    '<dt>Neerslag</dt><dd>Je start hoog, slaat, en houdt de stok net boven het vel. Handig als het na een luide noot meteen zacht moet.</dd>'+
+    '<dt>Opslag</dt><dd>Je start laag, slaat, en brengt de stok daarna naar boven. Handig voor een luide noot na een zachte.</dd>'+
+    '<dt>Tikslag</dt><dd>Een kleine slag die laag begint en laag terugkomt. Voor veel zachte noten na elkaar.</dd></dl></section>'+
+  '<section class="sec"><h2>4. Probeer het meteen</h2><p>Speel 8 slagen met rechts en 8 met links, rustig en even luid. Luister of elke slag hetzelfde klinkt. Zet de metronoom aan en begin traag.</p>'+
+   '<div class="mrow wrap"><button type="button" class="chip" data-metro="60">Metronoom op 60</button><button type="button" class="chip" data-metro="80">Metronoom op 80</button></div></section>'+
+  '<p class="src">Gebaseerd op uitleg van <a href="https://percussion.org/basic-snare-drum-technique/" target="_blank" rel="noopener">Percussive Arts Society</a>, <a href="https://www.thomann.de/be/onlineexpert_page_snare_drums_rudiments_and_basic_strokes.html" target="_blank" rel="noopener">Thomann</a>, <a href="https://drumstars.co.uk/how-to-hold-your-drumsticks-matched-trad-grip" target="_blank" rel="noopener">Drumstars</a> en <a href="https://www.musicindustryhowto.com/set-up-drum-throne-drums/" target="_blank" rel="noopener">Music Industry How-To</a> (Engelstalig). Vraag bij twijfel altijd aan een begeleider.</p>'+
+  '</div>';
 }
 
 /* stap 1: instrument kiezen */
@@ -84,7 +121,8 @@ function videoSection(part){
 function draw(){
   unmount(inlineMount); inlineMount = null;
   var c = current;
-  $('#main').innerHTML = c.part ? instrumentPage(c.piece, c.part, c.single) : c.piece ? choosePage(c.piece) : home();
+  $('#main').innerHTML = c.basics ? basicsPage() : c.part ? instrumentPage(c.piece, c.part, c.single) : c.piece ? choosePage(c.piece) : home();
+  each('[data-metro]', function(b){b.onclick=function(){setBpm(+b.dataset.metro); start(); setPanel(true)}});
   var v = $('#vid');
   if(v){
     v.loop = video.loop; v.playbackRate = video.rate; $('#rate').value = String(video.rate);
@@ -115,7 +153,7 @@ function route(){
   var parts = decodeURIComponent(location.hash.slice(1)).split('/');
   var first = parts[0], second = parts[1];
   if(first==='starters' || first==='gevorderden'){ level = first==='starters' ? 'starter' : 'gevorderd'; store.set('level', level); first = ''; second = ''; }
-  var piece = null, part = null, doc = null, single = false;
+  var piece = null, part = null, doc = null, single = false, basics = (first==='basics');
   if(first==='oefeningen'){
     if(second) doc = DATA.oefeningen.filter(function(d){return stem(d.file)===second})[0];
   } else if(first){
@@ -126,9 +164,9 @@ function route(){
     }
   }
   syncLevel();
-  var view = piece ? piece.id+'/'+(part?stem(part.file):'') : 'home-'+level;
+  var view = basics ? 'basics' : piece ? piece.id+'/'+(part?stem(part.file):'') : 'home-'+level;
   if(view !== current.view){
-    current.view = view; current.piece = piece; current.part = part; current.single = single;
+    current.view = view; current.piece = piece; current.part = part; current.single = single; current.basics = basics;
     video.letter = 'intro'; draw(); window.scrollTo(0,0);
   }
   if(doc) openViewer(doc.file, doc.title, doc.title); else closeViewer();
