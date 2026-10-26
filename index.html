@@ -52,19 +52,18 @@
     <div class="vrow">
       <button type="button" id="vm-go" class="vgo">Start</button>
       <button type="button" id="vm-minus" class="vstep" aria-label="Trager">−</button>
-      <button type="button" id="vm-bpm" class="vbpm" aria-label="Metronoom instellingen"><b>90</b> <small>bpm</small></button>
+      <button type="button" id="vm-bpm" class="vbpm" aria-label="Tempo aanpassen" aria-expanded="false" aria-controls="vm-pop"><b>90</b> <small>bpm</small></button>
       <button type="button" id="vm-plus" class="vstep" aria-label="Sneller">+</button>
+      <select id="vm-beats" class="vsel" aria-label="Maat"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select>
+      <span id="vm-presets" class="vpresets"></span>
       <div class="vdots" id="vm-dots" aria-hidden="true"></div>
     </div>
-    <div class="vrow">
-      <button type="button" class="vstep sm" id="vm-m5" aria-label="5 bpm trager">−5</button>
-      <input id="vm-range" class="vrange" type="range" min="30" max="220" value="90" aria-label="Tempo">
-      <button type="button" class="vstep sm" id="vm-p5" aria-label="5 bpm sneller">+5</button>
-    </div>
-    <div class="vrow wrap">
-      <select id="vm-beats" class="vsel" aria-label="Maat"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select>
-      <button type="button" class="chip" id="vm-tap">Tap tempo</button>
-      <span id="vm-presets" class="vpresets"></span>
+    <div id="vm-pop" class="vpop" hidden>
+      <div class="vpop-row">
+        <button type="button" class="vstep" id="vm-m5" aria-label="5 bpm trager">−5</button>
+        <input id="vm-range" class="vrange" type="range" min="30" max="220" value="90" aria-label="Tempo">
+        <button type="button" class="vstep" id="vm-p5" aria-label="5 bpm sneller">+5</button>
+      </div>
     </div>
   </div>
 

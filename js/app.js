@@ -235,7 +235,12 @@ function setPanel(open){
   if(open) $('#mgo').focus();
 }
 mbtn.onclick = function(){setPanel(panel.hidden)};
-$('#vm-bpm').onclick = function(){setPanel(panel.hidden)};
+var pop = $('#vm-pop');
+function setPop(open){ pop.hidden = !open; $('#vm-bpm').setAttribute('aria-expanded', String(open)); $('#vm-bpm').classList.toggle('open', open) }
+$('#vm-bpm').onclick = function(e){ e.stopPropagation(); setPop(pop.hidden) };
+pop.onclick = function(e){ e.stopPropagation() };
+document.addEventListener('click', function(){ setPop(false) });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') setPop(false) });
 $('#mclose').onclick = function(){setPanel(false)};
 function clampBpm(v){return Math.max(30, Math.min(220, Math.round(v)))}
 function setBpm(v){
@@ -313,7 +318,7 @@ function setBeats(n){M.beats=n; M.beat=0; $('#mbeats').value=String(n); $('#vm-b
 $('#mbeats').onchange = function(e){setBeats(+e.target.value)};
 $('#vm-beats').onchange = function(e){setBeats(+e.target.value)};
 var taps = [];
-$('#mtap').onclick = $('#vm-tap').onclick = function(){
+$('#mtap').onclick = function(){
   var n = performance.now();
   if(taps.length && n - taps[taps.length-1] > 2000) taps = [];
   taps.push(n); if(taps.length>5) taps.shift();

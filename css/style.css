@@ -264,3 +264,17 @@ svg .t.red{fill:var(--red)}
 .vslot{padding-bottom:0}
 .vslot + .vpages{padding-top:0}
 .vslot .vmini.inline{margin:0 auto}
+
+/* compacte balk + tempo-popup */
+.vmini{position:relative}
+.vmini .vrow{flex-wrap:wrap}
+.vbpm{border-radius:6px;padding:0 10px;border:2px dashed transparent}
+.vbpm b{border-bottom:3px solid var(--red)}
+.vbpm:hover,.vbpm.open{background:var(--bone)}
+.vpop{position:absolute;left:14px;right:14px;top:calc(100% - 4px);z-index:40;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:12px;box-shadow:0 8px 24px rgba(28,18,20,.28)}
+.vpop[hidden]{display:none}
+.vpop-row{display:flex;align-items:center;gap:10px}
+.vpop .vstep{width:56px;min-height:44px;font-size:1.1rem;flex:none}
+.vpop .vrange{height:44px}
+.vmini .vdots{margin-left:auto}
+.vmini{gap:0}
