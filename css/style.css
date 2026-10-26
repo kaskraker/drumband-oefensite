@@ -36,7 +36,7 @@ section.block>h2{font-size:1.6rem;color:var(--red);margin-bottom:16px}
 /* tegels */
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .tile{display:flex;align-items:flex-end;min-height:120px;padding:20px;background:var(--red);color:var(--bone);border-radius:6px;text-decoration:none;transition:background .15s,transform .15s}
-.tile h3{font-size:1.3rem;letter-spacing:0}
+.tile h3{font-size:1.3rem}
 .tile:hover{background:var(--red-dark);transform:translateY(-2px)}
 .tile.light{background:transparent;color:var(--red);border:2px solid var(--red)}
 .tile.light:hover{background:var(--red);color:var(--bone)}
@@ -261,3 +261,8 @@ svg .t.muted{font-weight:600;fill:var(--muted)}
 .vpop .chip.goal{background:var(--red);border-color:var(--red);color:var(--bone)}
 .vpop .chip.goal.now{background:var(--ink);border-color:var(--ink)}
 .vbpm::after{content:"";width:0;height:0;border:6px solid transparent;border-top-color:var(--ink);border-bottom:0;align-self:center;margin-left:2px}
+
+/* Lulo staat van nature ruim: letters dichter bij elkaar */
+.piece-head h1{letter-spacing:-.05em}
+.tile h3{letter-spacing:-.05em}
+.rl b{letter-spacing:-.03em}
