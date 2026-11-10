@@ -29,11 +29,131 @@ window.DATA = {
     },
     {
      "name": "Bassdrum",
-     "file": "files/samba-queen/bassdrum.pdf"
+     "file": "files/samba-queen/bassdrum.pdf",
+     "videos": {
+      "letters": [
+       {
+        "letter": "intro",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-intro.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-intro.mp4"
+        }
+       },
+       {
+        "letter": "A",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-A.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-A.mp4"
+        }
+       },
+       {
+        "letter": "B",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-B.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-B.mp4"
+        }
+       },
+       {
+        "letter": "C",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-C.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-C.mp4"
+        }
+       },
+       {
+        "letter": "D",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-D.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-D.mp4"
+        }
+       },
+       {
+        "letter": "E",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-E.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-E.mp4"
+        }
+       },
+       {
+        "letter": "F",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-F.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-F.mp4"
+        }
+       },
+       {
+        "letter": "G",
+        "video": {
+         "traag": "video/samba-queen/bassdrum-traag-G.mp4",
+         "snel": "video/samba-queen/bassdrum-snel-G.mp4"
+        }
+       }
+      ]
+     }
     },
     {
      "name": "Bekken",
-     "file": "files/samba-queen/bekken.pdf"
+     "file": "files/samba-queen/bekken.pdf",
+     "videos": {
+      "letters": [
+       {
+        "letter": "intro",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-intro.mp4",
+         "snel": "video/samba-queen/bekken-snel-intro.mp4"
+        }
+       },
+       {
+        "letter": "A",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-A.mp4",
+         "snel": "video/samba-queen/bekken-snel-A.mp4"
+        }
+       },
+       {
+        "letter": "B",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-B.mp4",
+         "snel": "video/samba-queen/bekken-snel-B.mp4"
+        }
+       },
+       {
+        "letter": "C",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-C.mp4",
+         "snel": "video/samba-queen/bekken-snel-C.mp4"
+        }
+       },
+       {
+        "letter": "D",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-D.mp4",
+         "snel": "video/samba-queen/bekken-snel-D.mp4"
+        }
+       },
+       {
+        "letter": "E",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-E.mp4",
+         "snel": "video/samba-queen/bekken-snel-E.mp4"
+        }
+       },
+       {
+        "letter": "F",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-F.mp4",
+         "snel": "video/samba-queen/bekken-snel-F.mp4"
+        }
+       },
+       {
+        "letter": "G",
+        "video": {
+         "traag": "video/samba-queen/bekken-traag-G.mp4",
+         "snel": "video/samba-queen/bekken-snel-G.mp4"
+        }
+       }
+      ]
+     }
     },
     {
      "name": "Bongos",
@@ -169,7 +289,67 @@ window.DATA = {
     },
     {
      "name": "Tim toms",
-     "file": "files/samba-queen/tim-toms.pdf"
+     "file": "files/samba-queen/tim-toms.pdf",
+     "videos": {
+      "letters": [
+       {
+        "letter": "intro",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-intro.mp4",
+         "snel": "video/samba-queen/timtoms-snel-intro.mp4"
+        }
+       },
+       {
+        "letter": "A",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-A.mp4",
+         "snel": "video/samba-queen/timtoms-snel-A.mp4"
+        }
+       },
+       {
+        "letter": "B",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-B.mp4",
+         "snel": "video/samba-queen/timtoms-snel-B.mp4"
+        }
+       },
+       {
+        "letter": "C",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-C.mp4",
+         "snel": "video/samba-queen/timtoms-snel-C.mp4"
+        }
+       },
+       {
+        "letter": "D",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-D.mp4",
+         "snel": "video/samba-queen/timtoms-snel-D.mp4"
+        }
+       },
+       {
+        "letter": "E",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-E.mp4",
+         "snel": "video/samba-queen/timtoms-snel-E.mp4"
+        }
+       },
+       {
+        "letter": "F",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-F.mp4",
+         "snel": "video/samba-queen/timtoms-snel-F.mp4"
+        }
+       },
+       {
+        "letter": "G",
+        "video": {
+         "traag": "video/samba-queen/timtoms-traag-G.mp4",
+         "snel": "video/samba-queen/timtoms-snel-G.mp4"
+        }
+       }
+      ]
+     }
     }
    ],
    "bpm": [
