@@ -3,7 +3,7 @@ window.DATA = {
   {
    "id": "walz-macabre",
    "title": "Walz Macabre",
-   "status": "actueel",
+   "status": "archief",
    "color": "burgundy",
    "parts": [
     {
