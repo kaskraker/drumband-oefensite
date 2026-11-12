@@ -428,24 +428,8 @@ window.DATA = {
      "voice": "snare"
     },
     {
-     "name": "Snare dubbel",
-     "file": "files/marsvaardig-junior/snare-dubbel.pdf",
-     "levels": [
-      "gevorderd"
-     ],
-     "voice": "snare"
-    },
-    {
      "name": "Tenor",
      "file": "files/marsvaardig-junior/tenor.pdf",
-     "levels": [
-      "gevorderd"
-     ],
-     "voice": "tenor"
-    },
-    {
-     "name": "Tenor dubbel",
-     "file": "files/marsvaardig-junior/tenor-dubbel.pdf",
      "levels": [
       "gevorderd"
      ],
